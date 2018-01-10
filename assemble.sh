@@ -8,6 +8,7 @@ while true; do
 
   echo "Starting Assembly."
 
+  echo "<head> <meta http-equiv="refresh" content="30" /> </head>" > $DIR_TO_FILES/$WEBFILENAME
   echo "<table border=1>" > $DIR_TO_FILES/$WEBFILENAME
 
   for FILENAME in "$(ls $DIR_TO_FILES/*.metrics)"; do
@@ -23,7 +24,7 @@ while true; do
   echo "</table>" >> $DIR_TO_FILES/$WEBFILENAME
 
   cat $DIR_TO_FILES/$WEBFILENAME
-  echo "ncftpput -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME"
+  #echo "ncftpput -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME"
   echo "$(ncftpput -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME)"
 
   echo "Waiting..."
