@@ -25,7 +25,7 @@ while true; do
 
   cat $DIR_TO_FILES/$WEBFILENAME
   #echo "ncftpput -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME"
-  echo "$(ncftpput -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com $DIR_TO_FILES/$WEBFILENAME)"
+  echo "$(ncftpput -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME)"
 
   echo "Waiting..."
   sleep 30
