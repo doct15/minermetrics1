@@ -23,6 +23,7 @@ while true; do
   echo "</table>" >> $DIR_TO_FILES/$WEBFILENAME
 
   cat $DIR_TO_FILES/$WEBFILENAME
+  echo "ncftpput -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME"
   echo "$(ncftpput -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME)"
 
   echo "Waiting..."
