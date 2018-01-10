@@ -2,7 +2,7 @@
 #
 export DIR_TO_FILES="/home/metrics"
 export WEBFILENAME="webfile.html"
-PASSWORD=$(cat /etc/metrics.pwd)
+PASSWORD=$(cat /etc/miner.pwd)
 
 while true; do
 
