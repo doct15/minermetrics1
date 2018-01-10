@@ -17,7 +17,7 @@ while true; do
       FILEDATA=$(cat $FILENAME)
       echo "$FILEDATA"
     done
-    echo "$FILEDATA" >> $DIR_TO_FILES/w$WEBFILENAME
+    echo "$FILEDATA" >> $DIR_TO_FILES/$WEBFILENAME
   done
 
   echo "</table>" >> $DIR_TO_FILES/$WEBFILENAME
