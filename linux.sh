@@ -4,5 +4,6 @@
 export NUMGPU=0
 export COMPUTER="linux"
 export GPUCARD="GTX 1060   "
+export SMICMD="nvidia-smi"
 
 ./shownvidia.sh
