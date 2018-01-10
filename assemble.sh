@@ -11,4 +11,7 @@ for FILENAME in "$(ls $DIR_TO_FILES/*.metrics)"; do
     FILEDATA=$(cat $FILENAME)
     echo "$FILEDATA"
   done
+  echo "$FILEDATA" >> $DIR_TO_FILES/webfile.html
 done
+
+echo "</table>" >> $DIR_TO_FILES/webfile.html
