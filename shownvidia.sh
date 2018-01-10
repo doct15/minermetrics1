@@ -8,6 +8,7 @@
 while true; do
 
   DATE=$(date '+%Y/%m/%d %H:%M:%S')
+  echo "Starting - $COMPUTER - $DATE"
 
   echo "<tr><th COLSPAN=5>$COMPUTER $DATE</th></tr>" | ssh metrics@10.0.0.2 "cat > $COMPUTER.metrics"
   echo "<tr><th>GPU</th><th>CARD</th><th>SPEED</th><th>MEM</th><th>TEMP</th></tr>" | ssh metrics@10.0.0.2 "cat >> $COMPUTER.metrics"
@@ -24,11 +25,14 @@ while true; do
     fi
 
     echo "<tr><td>$GPU</td><td>$GPUCARD</td><td>$SPEED</td><td>$MEM</td><td>$TEMP c</td></tr>" | ssh metrics@10.0.0.2 "cat >> $COMPUTER.metrics"
+    echo "GPU:$GPU - CARD:$GPUCARD - FAN:$SPEED - MEM:$MEM - TEMP:$TEMP c"
 
   done
 
   # echo "</table>" | ssh metrics@10.0.0.2 "cat >> $COMPUTER.metrics"
   echo "<!--DONE-->" | ssh metrics@10.0.0.2 "cat >> $COMPUTER.metrics"
+
+  echo "Waiting..."
 
   sleep 20
 
