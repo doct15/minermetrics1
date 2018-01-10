@@ -12,7 +12,7 @@ echo "<tr><th>GPU</th><th>CARD</th><th>SPEED</th><th>MEM</th><th>TEMP</th></tr>"
 
 for ((GPU=0;GPU<=NUMGPU;GPU++)); do
 
-  SPEED=$(/mnt/c/Program\ Files/NVIDIA\ Corporation/NVSMI/nvidia-smi.exe --query-gpu=fan.speed --format=csv -i $GPU | grep -e [0-9+])
+  SPEED=$("$SMICMD" --query-gpu=fan.speed --format=csv -i $GPU | grep -e [0-9+])
   SPEED=${SPEED:0:-1}
 
   MEM=$(/mnt/c/Program\ Files/NVIDIA\ Corporation/NVSMI/nvidia-smi.exe --query-gpu=memory.used --format=csv -i $GPU | grep -e [0-9+])

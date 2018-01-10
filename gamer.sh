@@ -4,6 +4,6 @@
 export NUMGPU=0
 export COMPUTER="gamer"
 export GPUCARD="GTX 1080 ti"
-export SMICMD="/mnt/c/Program\ Files/NVIDIA\ Corporation/NVSMI/nvidia-smi.exe"
+export SMICMD="/mnt/c/Program Files/NVIDIA Corporation/NVSMI/nvidia-smi.exe"
 
 ./shownvidia.sh
