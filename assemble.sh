@@ -20,7 +20,7 @@ while true; do
 
   echo "</table>" >> $DIR_TO_FILES/webfile.html
 
-  cat $DIR_TO_FILES/webfile
+  cat $DIR_TO_FILES/webfile.html
 
   echo "Waiting..."
   sleep 30
