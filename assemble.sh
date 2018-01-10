@@ -7,7 +7,7 @@ echo "<table border=1>" > $DIR_TO_FILES/webfile.html
 for FILENAME in "$(ls $DIR_TO_FILES/*.metrics)"; do
   echo "$FILENAME"
   FILEDATA=""
-  while [ ${FILEDATA: -11} != "<!--DONE-->" ]; do
+  while [ "${FILEDATA: -11}" != "<!--DONE-->" ]; do
     FILEDATA=$(cat $FILENAME)
     echo "$FILEDATA"
   done
