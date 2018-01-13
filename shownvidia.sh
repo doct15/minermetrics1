@@ -5,6 +5,8 @@
 # COMPUTER="gamer"      - Name of miner
 # GPUCARD="GTX 1080 ti" - Type of GPU Card
 
+WAIT=25
+
 while true; do
 
   DATE=$(date '+%Y/%m/%d %H:%M:%S')
@@ -34,6 +36,6 @@ while true; do
 
   echo "Waiting..."
 
-  sleep 20
+  sleep $WAIT
 
 done
