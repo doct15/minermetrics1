@@ -9,7 +9,8 @@ WORKERS=( "ewok20" "ewok10" "ewok30" )
 
 echo "Starting Assembly."
 
-echo "<html><head> <meta http-equiv="refresh" content="30" /> </head>" > $DIR_TO_FILES/$WEBFILENAME
+#echo "<html><head> <meta http-equiv="refresh" content="30" /> </head>" > $DIR_TO_FILES/$WEBFILENAME
+echo "<html><head></head>" > $DIR_TO_FILES/$WEBFILENAME
 echo "<table border=1>" >> $DIR_TO_FILES/$WEBFILENAME
 
 astack=0
@@ -53,12 +54,5 @@ echo "</table></html>" >> $DIR_TO_FILES/$WEBFILENAME
 cat $DIR_TO_FILES/$WEBFILENAME
 echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME)"
 
-exit
 
-while true; do
-
-  echo "Waiting..."
-  sleep 30
-
-done
 
