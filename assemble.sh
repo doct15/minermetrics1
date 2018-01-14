@@ -35,9 +35,10 @@ for MINER in ${MINERS[@]}; do
 
   RESPONSE=$(curl -s https://api.ethermine.org/miner/$MINERADDR/worker/$WORKER/currentStats)
   WORKERCURHASHRATE=$(bc <<< "scale=1; $(echo $RESPONSE | jq .data.currentHashrate) / 1000000" )
-  WORKERAVGHASHRATE=$(bc <<< "scale=1; $(echo $RESPONSEs | jq .data.averageHashrate) / 1000000" )
+  WORKERAVGHASHRATE=$(bc <<< "scale=1; $(echo $RESPONSE | jq .data.averageHashrate) / 1000000" )
      WORKERLASTSEEN=$(echo $RESPONSE | jq .data.lastSeen)
           TIMESINCE="$(($(date +%s)-$WORKERLASTSEEN))"
+           WORKEROK=""
           
   if [ $TIMESINCE -gt 660 ]; then
     WORKEROK="Timeout"
