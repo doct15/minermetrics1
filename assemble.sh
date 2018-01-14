@@ -5,8 +5,8 @@ WEBFILENAME="webfile.html"
 CSSFILENAME="metrics.css"
 PASSWORD=$(cat /etc/miner.pwd)
 MINERADDR=$(cat /etc/miner.addr)
-MINERS=( "gamer" "linux" "miner" )
-WORKERS=( "ewok20" "ewok10" "ewok30" )
+MINERS=( "linux" "gamer" "miner" )
+WORKERS=( "ewok10" "ewok20" "ewok30" )
 
 echo "Starting Assembly."
 
