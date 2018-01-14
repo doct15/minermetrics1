@@ -28,7 +28,7 @@ while true; do
   done
 
   echo "<!--DONE-->" >> "$WORKING_FILES/$COMPUTER.metrics"
-  cat "$WORKING_FILES/$COMPUTER.metrics" | ssh metrics@10.0.0.2 "cat >> $DIR_TO_FILES/$COMPUTER.metrics"
+  cat "$WORKING_FILES/$COMPUTER.metrics" | ssh metrics@10.0.0.2 "cat > $DIR_TO_FILES/$COMPUTER.metrics"
 
   sleep $WAIT
 
