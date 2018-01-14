@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-DIR_TO_FILES="/home/metrics"
+DIR_TO_FILES="/home/metrics/worker_files"
 WEBFILENAME="webfile.html"
 CSSFILENAME="metrics.css"
 PASSWORD=$(cat /etc/miner.pwd)
@@ -49,7 +49,6 @@ echo "<tr><td colspan=2 align="right">Hash Rate:</td><td colspan=3>$HASHRATE Mh/
 echo "<tr><td colspan=2 align="right">Unpaid:</td><td colspan=3>$UBALANCE coins</td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
 echo "<tr><td colspan=2 align="right">Coin/min:</td><td colspan=3>$CPM</td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
 echo "<tr><td colspan=2 align="right">Ethereum:</td><td colspan=3>\$ $ETHPRICE</td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
-
 
 echo "</table></html>" >> $DIR_TO_FILES/$WEBFILENAME
 cat $DIR_TO_FILES/$WEBFILENAME

@@ -4,7 +4,7 @@
 # NUMGPU=0              - Number of GPUs
 # COMPUTER="gamer"      - Name of miner
 # GPUCARD="GTX 1080 ti" - Type of GPU Card
-DIR_TO_FILES="minermetrics1\worker_files"
+DIR_TO_FILES="minermetrics1/worker_files"
 WORKING_FILES="temp"
 WAIT=25
 
@@ -27,8 +27,8 @@ while true; do
     echo "<tr><td>$GPU</td><td>$GPUCARD</td><td>$SPEED</td><td>$MEM</td><td>$TEMP c</td></tr>" >> "$WORKING_FILES/$COMPUTER.metrics"
   done
 
-  echo "<!--DONE-->" | ssh metrics@10.0.0.2 "cat >> $WORKING_FILES/$DIR_TO_FILES/$COMPUTER.metrics"
-  cat $WORKING_FILES/$DIR_TO_FILES/$COMPUTER.metrics | ssh metrics@10.0.0.2 "cat >> $DIR_TO_FILES/$COMPUTER.metrics"
+  echo "<!--DONE-->" >> "$WORKING_FILES/$COMPUTER.metrics"
+  cat "$WORKING_FILES/$COMPUTER.metrics" | ssh metrics@10.0.0.2 "cat >> $DIR_TO_FILES/$COMPUTER.metrics"
 
   sleep $WAIT
 
