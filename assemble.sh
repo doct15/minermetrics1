@@ -8,7 +8,7 @@ MINERADDR=$(cat /etc/miner.addr)
 MINERS=( "linux" "gamer" "miner" )
 WORKERS=( "ewok10" "ewok20" "ewok30" )
 TIMEOUT=910
-
+TRIES=10
 
 echo "Starting Assembly."
 
@@ -26,38 +26,45 @@ for MINER in ${MINERS[@]}; do
     echo "File $FILENAME doesn't exist."
     exit
   fi
-  while [ "${FILEDATA: -11}" != "<!--DONE-->" ]; do
+  attempts=0
+  while [ "${FILEDATA: -11}" != "<!--DONE-->" ] && [ "$attempts" -lt "$TRIES" ]; do
     FILEDATA=$(cat $FILENAME)
     #echo "$FILEDATA"
-    sleep 2
+    sleep 1
+    let attempts++
   done
-
   echo "<table class=blueTable>" >> $DIR_TO_FILES/$WEBFILENAME
-  echo "$FILEDATA" >> $DIR_TO_FILES/$WEBFILENAME
+  if [ "$attempts" -lt "$TRIES" ]; then
+    echo "$FILEDATA" >> $DIR_TO_FILES/$WEBFILENAME
 
-  RESPONSE=$(curl -s https://api.ethermine.org/miner/$MINERADDR/worker/$WORKER/currentStats)
-  WORKERCURHASHRATE=$(bc <<< "scale=1; $(echo $RESPONSE | jq .data.currentHashrate) / 1000000" )
-  WORKERAVGHASHRATE=$(bc <<< "scale=1; $(echo $RESPONSE | jq .data.averageHashrate) / 1000000" )
-     WORKERLASTSEEN=$(echo $RESPONSE | jq .data.lastSeen)
-          TIMESINCE="$(($(date +%s)-$WORKERLASTSEEN))"
-           WORKEROK=""
-          
-  if [ $TIMESINCE -gt $TIMEOUT ]; then
-    WORKEROK="Timeout"
+    RESPONSE=$(curl -s https://api.ethermine.org/miner/$MINERADDR/worker/$WORKER/currentStats)
+    WORKERCURHASHRATE=$(bc <<< "scale=1; $(echo $RESPONSE | jq .data.currentHashrate) / 1000000" )
+    WORKERAVGHASHRATE=$(bc <<< "scale=1; $(echo $RESPONSE | jq .data.averageHashrate) / 1000000" )
+       WORKERLASTSEEN=$(echo $RESPONSE | jq .data.lastSeen)
+            TIMESINCE="$(($(date +%s)-$WORKERLASTSEEN))"
+             WORKEROK=""
+            
+    if [ $TIMESINCE -gt $TIMEOUT ]; then
+      WORKEROK="Timeout"
+    else
+      WORKEROK="OK"
+    fi
+
+    echo "<tr><td colspan=5></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
+
+    if [ $MINER == "miner" ]; then
+      echo "<tr><td colspan=5 style=height:0% ></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
+    fi
+
+    echo "<tr><th colspan=2>Worker</th><th>CurHash</th><th>AvgHash</th><th>IsOK</th></tr>" >> $DIR_TO_FILES/$WEBFILENAME
+    echo "<tr><td colspan=2>$WORKER</td><td>$WORKERCURHASHRATE MH/s</td><td>$WORKERAVGHASHRATE MH/s</td><td>$WORKEROK</td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
+
   else
-    WORKEROK="OK"
+    echo "<tr><th colspan=5>$MINER data temporarily unavailable</th></tr>" >> $DIR_TO_FILES/$WEBFILENAME
+    cat $DIR_TO_FILES/$WEBFILENAME
   fi
 
-  echo "T:$TIMESINCE - $WORKERLASTSEEN - $(date +%s) - $WORKEROK"
-
-  echo "<tr><td colspan=5></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
-  if [ $MINER == "miner" ]; then
-    echo "<tr><td colspan=5 style=height:0% ></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
-  fi
-  echo "<tr><th colspan=2>Worker</th><th>CurHash</th><th>AvgHash</th><th>IsOK</th></tr>" >> $DIR_TO_FILES/$WEBFILENAME
-  echo "<tr><td colspan=2>$WORKER</td><td>$WORKERCURHASHRATE MH/s</td><td>$WORKERAVGHASHRATE MH/s</td><td>$WORKEROK</td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
   echo "</table><br>" >> $DIR_TO_FILES/$WEBFILENAME
-
 done
 
 ETHPRICE=$(curl -s https://api.ethermine.org/poolStats | jq .data.price.usd)
@@ -79,7 +86,6 @@ echo "</table></body></html>" >> $DIR_TO_FILES/$WEBFILENAME
 cat $DIR_TO_FILES/$WEBFILENAME
 
 echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $CSSFILENAME)"
-
 echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME)"
 
 

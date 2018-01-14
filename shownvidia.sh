@@ -7,6 +7,10 @@
 DIR_TO_FILES="minermetrics1/worker_files"
 WORKING_FILES="temp"
 WAIT=25
+TEMPWARN=82
+TEMPEMER=85
+PASSWORD=$(cat /etc/pom.pwd)
+PHONE=$(cat /etc/phone.number)
 
 while true; do
 
@@ -25,6 +29,15 @@ while true; do
       SPEED=${SPEED:0:-1}
       MEM=${MEM:0:-1}
       TEMP=${TEMP:0:-1}
+    fi
+    if [ "$TEMP" -gt "$TEMPEMER" ]; then
+      echo "Sending Temperature Warning Text to $PHONE"
+      sendemail -f doc@tavian.com -t $PHONE@tmomail.net -u "Mining Temp Warning!" -m "Miner: $COMPUTER - GPU: $GPU - TEMP: $TEMP c is higher than threshold of $TEMPWARN c" -s smtp.tavian.com:587 -xu distelli@tavian.com -xp $PASSWORD -v
+    fi
+    if [ "$TEMP" -gt "$TEMPWARN" ]; then
+      echo "Sending Temperature Warning eMail to doc@tavian.com"
+      sendemail -f doc@tavian.com -t doc@tavian.com -u "Mining Temp Warning $TEMP c!" -m "Miner: $COMPUTER - GPU: $GPU - TEMP: $TEMP c is higher than threshold of $TEMPWARN c" -s smtp.tavian.com:587 -xu distelli@tavian.com -xp $PASSWORD -v
+      TEMP="<b>$TEMP</b>"
     fi
     echo "GPU:$GPU - $GPUCARD - FAN:$SPEED - MEM:$MEM - TEMP:$TEMP"
     echo "<tr><td>$GPU</td><td>$GPUCARD</td><td>$SPEED</td><td>$MEM</td><td>$TEMP c</td></tr>" >> "$WORKING_FILES/$COMPUTER.metrics"
