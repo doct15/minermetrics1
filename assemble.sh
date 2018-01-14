@@ -40,9 +40,9 @@ for MINER in ${MINERS[@]}; do
           TIMESINCE="$(($(date +%s)-$WORKERLASTSEEN))"
           
   if [ $TIMESINCE > 660 ]; then
-    $WORKEROK="Timeout"
+    WORKEROK="Timeout"
   else
-    $WORKEROK="OK"
+    WORKEROK="OK"
   fi
 
   echo "<tr><td colspan=5></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
