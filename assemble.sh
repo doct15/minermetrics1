@@ -24,11 +24,13 @@ for MINER in ${MINERS[@]}; do
     echo "File $FILENAME doesn't exist."
     exit
   fi
+  echo "$FILENAME"
   while [ "${FILEDATA: -11}" != "<!--DONE-->" ]; do
     FILEDATA=$(cat $FILENAME)
-    #echo "$FILEDATA"
+    echo "$FILEDATA"
     sleep 2
   done
+  echo "$FILEDATA"
   echo "$FILEDATA" >> $DIR_TO_FILES/$WEBFILENAME
   WORKERCURHASHRATE=$(bc <<< "scale=1; $(curl -s https://api.ethermine.org/miner/$MINERADDR/worker/$WORKER/currentStats | jq .data.currentHashrate) / 1000000" )
   WORKERAVGHASHRATE=$(bc <<< "scale=1; $(curl -s https://api.ethermine.org/miner/$MINERADDR/worker/$WORKER/currentStats | jq .data.averageHashrate) / 1000000" )
