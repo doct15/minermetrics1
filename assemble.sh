@@ -12,7 +12,7 @@ echo "Starting Assembly."
 
 #echo "<html><head> <meta http-equiv="refresh" content="30" /> </head>" > $DIR_TO_FILES/$WEBFILENAME
 echo "<html><head><link rel="stylesheet" href="metrics.css" /></head>" > $DIR_TO_FILES/$WEBFILENAME
-echo "<table style=blueTable>" >> $DIR_TO_FILES/$WEBFILENAME
+echo "<table class=blueTable>" >> $DIR_TO_FILES/$WEBFILENAME
 
 astack=0
 for MINER in ${MINERS[@]}; do
