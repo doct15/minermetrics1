@@ -16,6 +16,7 @@ echo "<html><head><link rel="stylesheet" href="metrics.css" /></head>" > $DIR_TO
 astack=0
 for MINER in ${MINERS[@]}; do
   WORKER=${WORKERS["$astack"]}
+
   astack=$((astack + 1))
   FILENAME="$DIR_TO_FILES/$MINER.metrics"
   FILEDATA=""
@@ -23,23 +24,24 @@ for MINER in ${MINERS[@]}; do
     echo "File $FILENAME doesn't exist."
     exit
   fi
-  echo "$FILENAME"
   while [ "${FILEDATA: -11}" != "<!--DONE-->" ]; do
     FILEDATA=$(cat $FILENAME)
-    echo "$FILEDATA"
+    #echo "$FILEDATA"
     sleep 2
   done
 
   echo "<table class=blueTable>" >> $DIR_TO_FILES/$WEBFILENAME
-
-  echo "$FILEDATA"
   echo "$FILEDATA" >> $DIR_TO_FILES/$WEBFILENAME
+
   WORKERCURHASHRATE=$(bc <<< "scale=1; $(curl -s https://api.ethermine.org/miner/$MINERADDR/worker/$WORKER/currentStats | jq .data.currentHashrate) / 1000000" )
   WORKERAVGHASHRATE=$(bc <<< "scale=1; $(curl -s https://api.ethermine.org/miner/$MINERADDR/worker/$WORKER/currentStats | jq .data.averageHashrate) / 1000000" )
+
+  echo "<tr><td colspan=5></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
+  if [ $MINER == "miner" }; then
+    echo "<tr><td colspan=5></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
+  fi
   echo "<tr><th colspan=2>Worker</th><th>CurHash</th><th>AvgHash</th><th>IsOK</th></tr>" >> $DIR_TO_FILES/$WEBFILENAME
   echo "<tr><td colspan=2>$WORKER</td><td>$WORKERCURHASHRATE MH/s</td><td>$WORKERAVGHASHRATE MH/s</td><td></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
-  #echo "<tr><td colspan=5></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
-
   echo "</table><br>" >> $DIR_TO_FILES/$WEBFILENAME
 
 done
