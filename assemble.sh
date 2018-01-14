@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-DIR_TO_FILES="/home/metrics/worker_files"
+DIR_TO_FILES="/home/metrics/minermetrics1/worker_files"
 WEBFILENAME="webfile.html"
 CSSFILENAME="metrics.css"
 PASSWORD=$(cat /etc/miner.pwd)
