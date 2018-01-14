@@ -39,13 +39,13 @@ for MINER in ${MINERS[@]}; do
      WORKERLASTSEEN=$(echo $RESPONSE | jq .data.lastSeen)
           TIMESINCE="$(($(date +%s)-$WORKERLASTSEEN))"
           
-  if [ $TIMESINCE > 660 ]; then
+  if [ $TIMESINCE -gt 660 ]; then
     WORKEROK="Timeout"
   else
     WORKEROK="OK"
   fi
 
-  echo "T:$TIMESINCE - $WORKERLASTSEEN - $(date +%s)"
+  echo "T:$TIMESINCE - $WORKERLASTSEEN - $(date +%s) - $WORKEROK"
 
   echo "<tr><td colspan=5></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
   if [ $MINER == "miner" ]; then
