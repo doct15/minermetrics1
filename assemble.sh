@@ -2,6 +2,7 @@
 #
 DIR_TO_FILES="/home/metrics"
 WEBFILENAME="webfile.html"
+CSSFILENAME="metrics.css"
 PASSWORD=$(cat /etc/miner.pwd)
 MINERADDR=$(cat /etc/miner.addr)
 MINERS=( "gamer" "linux" "miner" )
@@ -10,8 +11,8 @@ WORKERS=( "ewok20" "ewok10" "ewok30" )
 echo "Starting Assembly."
 
 #echo "<html><head> <meta http-equiv="refresh" content="30" /> </head>" > $DIR_TO_FILES/$WEBFILENAME
-echo "<html><head></head>" > $DIR_TO_FILES/$WEBFILENAME
-echo "<table border=1>" >> $DIR_TO_FILES/$WEBFILENAME
+echo "<html><head><link rel="stylesheet" href="metrics.css" /></head>" > $DIR_TO_FILES/$WEBFILENAME
+echo "<table style=blueTable>" >> $DIR_TO_FILES/$WEBFILENAME
 
 astack=0
 for MINER in ${MINERS[@]}; do
@@ -52,6 +53,9 @@ echo "<tr><td colspan=2 align="right">Ethereum:</td><td colspan=3>\$ $ETHPRICE</
 
 echo "</table></html>" >> $DIR_TO_FILES/$WEBFILENAME
 cat $DIR_TO_FILES/$WEBFILENAME
+
+echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$CSSFILENAME)"
+
 echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME)"
 
 
