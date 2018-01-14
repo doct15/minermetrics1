@@ -12,6 +12,8 @@ while true; do
 
   DATE=$(date '+%Y/%m/%d %H:%M:%S')
 
+  echo "Waking up $DATE - $COMPUTER GPU Metrics"
+
   echo "<tr><th COLSPAN=5>$COMPUTER $DATE</th></tr>" > "$WORKING_FILES/$COMPUTER.metrics"
   echo "<tr><th>GPU</th><th>CARD</th><th>SPEED</th><th>MEM</th><th>TEMP</th></tr>" >> "$WORKING_FILES/$COMPUTER.metrics"
 
@@ -24,12 +26,17 @@ while true; do
       MEM=${MEM:0:-1}
       TEMP=${TEMP:0:-1}
     fi
+    echo "GPU:$GPU - $GPUCARD - FAN:$SPEED - MEM:$MEM - TEMP:$TEMP"
     echo "<tr><td>$GPU</td><td>$GPUCARD</td><td>$SPEED</td><td>$MEM</td><td>$TEMP c</td></tr>" >> "$WORKING_FILES/$COMPUTER.metrics"
   done
 
   echo "<!--DONE-->" >> "$WORKING_FILES/$COMPUTER.metrics"
   cat "$WORKING_FILES/$COMPUTER.metrics" | ssh metrics@10.0.0.2 "cat > $DIR_TO_FILES/$COMPUTER.metrics"
 
-  sleep $WAIT
+  echo -n "Sleeping for $WAIT"
+  for ((s=0;s<WAIT;s++)); do
+    echo -n "."
+    sleep 1
+  done
 
 done
