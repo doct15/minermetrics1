@@ -7,6 +7,8 @@ PASSWORD=$(cat /etc/miner.pwd)
 MINERADDR=$(cat /etc/miner.addr)
 MINERS=( "linux" "gamer" "miner" )
 WORKERS=( "ewok10" "ewok20" "ewok30" )
+TIMEOUT=910
+
 
 echo "Starting Assembly."
 
@@ -40,7 +42,7 @@ for MINER in ${MINERS[@]}; do
           TIMESINCE="$(($(date +%s)-$WORKERLASTSEEN))"
            WORKEROK=""
           
-  if [ $TIMESINCE -gt 660 ]; then
+  if [ $TIMESINCE -gt $TIMEOUT ]; then
     WORKEROK="Timeout"
   else
     WORKEROK="OK"
