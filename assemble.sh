@@ -11,7 +11,7 @@ WORKERS=( "ewok10" "ewok20" "ewok30" )
 echo "Starting Assembly."
 
 #echo "<html><head> <meta http-equiv="refresh" content="30" /> </head>" > $DIR_TO_FILES/$WEBFILENAME
-echo "<html><head><link rel="stylesheet" href="metrics.css" /></head>" > $DIR_TO_FILES/$WEBFILENAME
+echo "<html><head><link rel="stylesheet" href="metrics.css" /></head><body bgcolor=#000000>" > $DIR_TO_FILES/$WEBFILENAME
 
 astack=0
 for MINER in ${MINERS[@]}; do
@@ -61,7 +61,7 @@ echo "<tr><td colspan=2 align="right">Coin/min:</td><td colspan=3>$CPM</td></tr>
 echo "<tr><td colspan=2 align="right">Ethereum:</td><td colspan=3>\$ $ETHPRICE</td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
 echo "</table>" >> $DIR_TO_FILES/$WEBFILENAME
 
-echo "</table></html>" >> $DIR_TO_FILES/$WEBFILENAME
+echo "</table></body></html>" >> $DIR_TO_FILES/$WEBFILENAME
 cat $DIR_TO_FILES/$WEBFILENAME
 
 echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $CSSFILENAME)"
