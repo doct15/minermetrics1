@@ -3,6 +3,7 @@ table.blueTable {
   background-color: #EEEEEE;
   text-align: left;
   border-collapse: collapse;
+  width: 70%;
 }
 table.blueTable td, table.blueTable th {
   border: 1px solid #AAAAAA;
