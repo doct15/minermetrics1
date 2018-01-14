@@ -45,6 +45,8 @@ for MINER in ${MINERS[@]}; do
     WORKEROK="OK"
   fi
 
+  echo "T:$TIMESINCE - $WORKERLASTSEEN - $(date +%s)"
+
   echo "<tr><td colspan=5></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
   if [ $MINER == "miner" ]; then
     echo "<tr><td colspan=5 style=height:0% ></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
