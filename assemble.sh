@@ -38,7 +38,7 @@ for MINER in ${MINERS[@]}; do
 
   echo "<tr><td colspan=5></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
   if [ $MINER == "miner" ]; then
-    echo "<tr><td colspan=5 height=0 ></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
+    echo "<tr><td colspan=5 style=height:0% ></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
   fi
   echo "<tr><th colspan=2>Worker</th><th>CurHash</th><th>AvgHash</th><th>IsOK</th></tr>" >> $DIR_TO_FILES/$WEBFILENAME
   echo "<tr><td colspan=2>$WORKER</td><td>$WORKERCURHASHRATE MH/s</td><td>$WORKERAVGHASHRATE MH/s</td><td></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
