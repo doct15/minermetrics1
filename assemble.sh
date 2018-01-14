@@ -53,7 +53,7 @@ echo "<tr><td colspan=2 align="right">Ethereum:</td><td colspan=3>\$ $ETHPRICE</
 echo "</table></html>" >> $DIR_TO_FILES/$WEBFILENAME
 cat $DIR_TO_FILES/$WEBFILENAME
 
-echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$CSSFILENAME)"
+echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $CSSFILENAME)"
 
 echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME)"
 
