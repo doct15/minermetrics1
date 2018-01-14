@@ -37,7 +37,7 @@ for MINER in ${MINERS[@]}; do
   WORKERAVGHASHRATE=$(bc <<< "scale=1; $(curl -s https://api.ethermine.org/miner/$MINERADDR/worker/$WORKER/currentStats | jq .data.averageHashrate) / 1000000" )
 
   echo "<tr><td colspan=5></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
-  if [ $MINER == "miner" }; then
+  if [ $MINER == "miner" ]; then
     echo "<tr><td colspan=5></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
   fi
   echo "<tr><th colspan=2>Worker</th><th>CurHash</th><th>AvgHash</th><th>IsOK</th></tr>" >> $DIR_TO_FILES/$WEBFILENAME
