@@ -7,7 +7,7 @@
 DIR_TO_FILES="minermetrics1/worker_files"
 WORKING_FILES="temp"
 WAIT=25
-TEMPWARN=82
+TEMPWARN=83
 TEMPEMER=85
 PASSWORD=$(cat /etc/pom.pwd)
 PHONE=$(cat /etc/phone.number)
