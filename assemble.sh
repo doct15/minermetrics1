@@ -7,13 +7,16 @@ PASSWORD=$(cat /etc/miner.pwd)
 MINERADDR=$(cat /etc/miner.addr)
 MINERS=( "linux" "gamer" "miner" )
 WORKERS=( "ewok10" "ewok20" "ewok30" )
-TIMEOUT=910
+#MINERPREVTIME=( "2100/01/01 00:00:01" "2100/01/01 00:00:01" "2100/01/01 00:00:01")
+TIMEOUT_FILE=910
+TIMEOUT_MINER=59
 TRIES=10
+TEMP_WARN=49
 
 echo "Starting Assembly."
 
 #echo "<html><head> <meta http-equiv="refresh" content="30" /> </head>" > $DIR_TO_FILES/$WEBFILENAME
-echo "<html><head><link rel="stylesheet" href="metrics.css" /></head><body bgcolor=#000000>" > $DIR_TO_FILES/$WEBFILENAME
+echo "<html><head><link rel="stylesheet" href="$CSSFILENAME" /></head><body bgcolor=#000000>" > $DIR_TO_FILES/$WEBFILENAME
 
 astack=0
 for MINER in ${MINERS[@]}; do
@@ -33,6 +36,26 @@ for MINER in ${MINERS[@]}; do
     sleep 1
     let attempts++
   done
+
+  MINERTIME=${FILEDATA:24:19}
+  CURTIME=$(date +%s)
+  TIMEDIFF=$((CURTIME-$(date -d"$MINERTIME" +%s)))
+  #echo "Prev $MINERTIME"
+  #echo "Cur  $CURTIME"
+  #echo "Diff $TIMEDIFF"
+  CUR_TEMP=${FILEDATA:196:2}
+  #echo "$FILEDATA\n---"
+  #echo "FD ${FILEDATA[0]}"
+  #echo "CurTemp $CUR_TEMP"
+  if ((TIMEDIFF>TIMEOUT_MINER)); then
+    echo "Miner reporting timed out!"
+    echo "Sending emergency page!"
+  fi
+  if ((CUR_TEMP<TEMP_WARN)); then
+    echo "Miner temperature drop!"
+    echo "Sending emergency page!"
+  fi
+
   echo "<table class=blueTable>" >> $DIR_TO_FILES/$WEBFILENAME
   if [ "$attempts" -lt "$TRIES" ]; then
     echo "$FILEDATA" >> $DIR_TO_FILES/$WEBFILENAME
@@ -44,7 +67,7 @@ for MINER in ${MINERS[@]}; do
             TIMESINCE="$(($(date +%s)-$WORKERLASTSEEN))"
              WORKEROK=""
             
-    if [ $TIMESINCE -gt $TIMEOUT ]; then
+    if [ $TIMESINCE -gt $TIMEOUT_FILE ]; then
       WORKEROK="Timeout"
     else
       WORKEROK="OK"
