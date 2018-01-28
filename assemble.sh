@@ -7,21 +7,50 @@ PASSWORD=$(cat /etc/miner.pwd)
 MINERADDR=$(cat /etc/miner.addr)
 MINERS=( "linux" "gamer" "miner" )
 WORKERS=( "ewok10" "ewok20" "ewok30" )
-#MINERPREVTIME=( "2100/01/01 00:00:01" "2100/01/01 00:00:01" "2100/01/01 00:00:01")
+#MINERS=( "linux" "miner" )
+#WORKERS=( "ewok10" "ewok30" )
+PHONENUM=$(cat /etc/phone.number)
+PHONEPWD=$(cat /etc/pom.pwd)
+PAGERFILE="pager.timer"
+#LOGFILE=$DIR_TO_FILES/log.txt
 TIMEOUT_FILE=910
 TIMEOUT_MINER=59
 TRIES=10
 TEMP_WARN=49
 
+function page_msg () {
+  # Paging Brian PHONENUM
+  if [[ -z $1 ]]; then
+    MSG="No Message"
+  else
+    MSG=$1
+  fi
+  if ! [ -e $DIR_TO_FILES/$PAGERFILE ]; then
+    #echo "File doesn't exist" >> "$LOGFILE"
+    touch $DIR_TO_FILES/$PAGERFILE
+  else
+    #echo "File exists" >> "$LOGFILE"
+    #LS=$(ls -la $DIR_TO_FILES/$PAGERFILE)
+    #echo "ls $LS" >> "$LOGFILE"
+    FILETIME=$(date -d"$(stat -c '%y' $DIR_TO_FILES/$PAGERFILE)" +%s)
+    #echo "filetime $FILETIME" >> "$LOGFILE"
+    TIMEDIFF=$(($(date +%s)-FILETIME))
+    #echo "date $(date +%s)" >> "$LOGFILE"
+    if ((TIMEDIFF<600)); then
+      return
+    else
+      touch $DIR_TO_FILES/$PAGERFILE
+    fi
+  fi
+  sendemail -f doc@tavian.com -t $PHONENUM@tmomail.net -u "Miner Alert" -m "$MSG" -s smtp.tavian.com:587 -xu distelli@tavian.com -xp $PHONEPWD -v
+}
+
 echo "Starting Assembly."
-
-#echo "<html><head> <meta http-equiv="refresh" content="30" /> </head>" > $DIR_TO_FILES/$WEBFILENAME
 echo "<html><head><link rel="stylesheet" href="$CSSFILENAME" /></head><body bgcolor=#000000>" > $DIR_TO_FILES/$WEBFILENAME
-
 astack=0
 for MINER in ${MINERS[@]}; do
   WORKER=${WORKERS["$astack"]}
-
+  WORKEROK="OK"
   astack=$((astack + 1))
   FILENAME="$DIR_TO_FILES/$MINER.metrics"
   FILEDATA=""
@@ -32,7 +61,6 @@ for MINER in ${MINERS[@]}; do
   attempts=0
   while [ "${FILEDATA: -11}" != "<!--DONE-->" ] && [ "$attempts" -lt "$TRIES" ]; do
     FILEDATA=$(cat $FILENAME)
-    #echo "$FILEDATA"
     sleep 1
     let attempts++
   done
@@ -40,20 +68,18 @@ for MINER in ${MINERS[@]}; do
   MINERTIME=${FILEDATA:24:19}
   CURTIME=$(date +%s)
   TIMEDIFF=$((CURTIME-$(date -d"$MINERTIME" +%s)))
-  #echo "Prev $MINERTIME"
-  #echo "Cur  $CURTIME"
-  #echo "Diff $TIMEDIFF"
   CUR_TEMP=${FILEDATA:196:2}
-  #echo "$FILEDATA\n---"
-  #echo "FD ${FILEDATA[0]}"
-  #echo "CurTemp $CUR_TEMP"
   if ((TIMEDIFF>TIMEOUT_MINER)); then
     echo "Miner reporting timed out!"
     echo "Sending emergency page!"
+    page_msg "Miner time out. MINER.sh is not working?" 
+    WORKEROK="Timeout"
   fi
   if ((CUR_TEMP<TEMP_WARN)); then
     echo "Miner temperature drop!"
     echo "Sending emergency page!"
+    page_msg "Miner temp low. Claymore may have stopped?" 
+    WORKEROK="Stopped"
   fi
 
   echo "<table class=blueTable>" >> $DIR_TO_FILES/$WEBFILENAME
@@ -65,13 +91,6 @@ for MINER in ${MINERS[@]}; do
     WORKERAVGHASHRATE=$(bc <<< "scale=1; $(echo $RESPONSE | jq .data.averageHashrate) / 1000000" )
        WORKERLASTSEEN=$(echo $RESPONSE | jq .data.lastSeen)
             TIMESINCE="$(($(date +%s)-$WORKERLASTSEEN))"
-             WORKEROK=""
-            
-    if [ $TIMESINCE -gt $TIMEOUT_FILE ]; then
-      WORKEROK="Timeout"
-    else
-      WORKEROK="OK"
-    fi
 
     echo "<tr><td colspan=5></td></tr>" >> $DIR_TO_FILES/$WEBFILENAME
 
