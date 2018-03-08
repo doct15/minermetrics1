@@ -6,7 +6,7 @@
 # GPUCARD="GTX 1080 ti" - Type of GPU Card
 DIR_TO_FILES="minermetrics1/worker_files"
 WORKING_FILES="temp"
-WAIT=25
+WAIT=55
 TEMPWARN=83
 TEMPEMER=85
 PASSWORD=$(cat /etc/pom.pwd)

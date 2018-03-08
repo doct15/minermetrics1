@@ -7,8 +7,10 @@ PASSWORD=$(cat /etc/miner.pwd)
 MINERADDR=$(cat /etc/miner.addr)
 MINERS=( "linux" "gamer" "miner" )
 WORKERS=( "ewok10" "ewok20" "ewok30" )
+
 #MINERS=( "linux" "miner" )
 #WORKERS=( "ewok10" "ewok30" )
+
 PHONENUM=$(cat /etc/phone.number)
 PHONEPWD=$(cat /etc/pom.pwd)
 PAGERFILE="pager.timer"
