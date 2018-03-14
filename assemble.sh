@@ -44,7 +44,7 @@ function page_msg () {
       touch $DIR_TO_FILES/$PAGERFILE
     fi
   fi
-  sendemail -f doc@tavian.com -t $PHONENUM@tmomail.net -u "Miner Alert" -m "$MSG" -s smtp.tavian.com:587 -xu distelli@tavian.com -xp $PHONEPWD -v
+  #sendemail -f doc@tavian.com -t $PHONENUM@tmomail.net -u "Miner Alert" -m "$MSG" -s smtp.tavian.com:587 -xu distelli@tavian.com -xp $PHONEPWD -v
 }
 
 echo "Starting Assembly."
