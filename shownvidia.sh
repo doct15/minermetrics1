@@ -44,7 +44,7 @@ while true; do
   done
 
   echo "<!--DONE-->" >> "$WORKING_FILES/$COMPUTER.metrics"
-  cat "$WORKING_FILES/$COMPUTER.metrics" | ssh metrics@192.168.0.102 "cat > $DIR_TO_FILES/$COMPUTER.metrics"
+  cat "$WORKING_FILES/$COMPUTER.metrics" | ssh metrics@192.168.0.119 "cat > $DIR_TO_FILES/$COMPUTER.metrics"
 
   echo -n "Sleeping for $WAIT"
   for ((s=0;s<WAIT;s++)); do
