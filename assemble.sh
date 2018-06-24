@@ -89,6 +89,7 @@ for MINER in ${MINERS[@]}; do
     echo "$FILEDATA" >> $DIR_TO_FILES/$WEBFILENAME
 
     RESPONSE=$(curl -s https://api.ethermine.org/miner/$MINERADDR/worker/$WORKER/currentStats)
+    echo $RESPONSE : jq .
     WORKERCURHASHRATE=$(bc <<< "scale=1; $(echo $RESPONSE | jq .data.currentHashrate) / 1000000" )
     WORKERAVGHASHRATE=$(bc <<< "scale=1; $(echo $RESPONSE | jq .data.averageHashrate) / 1000000" )
        WORKERLASTSEEN=$(echo $RESPONSE | jq .data.lastSeen)
