@@ -1,9 +1,8 @@
 #!/bin/bash
 #
 # Set the following env variables before running this script
-export NUMGPU=0
+export NUMGPU=1
 export COMPUTER="gamer"
-export GPUCARD="GTX 1080 ti"
-export SMICMD="/mnt/c/Program Files/NVIDIA Corporation/NVSMI/nvidia-smi.exe"
+export SMICMD="/mnt/c/Windows/System32/nvidia-smi.exe"
 
-./shownvidia.sh
+./writefile.sh
