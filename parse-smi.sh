@@ -2,7 +2,7 @@
 #
 
 # Wait for miners to deliver files
-sleep 60
+#sleep 60
 
 #DIR_TO_FILES="/home/metrics/minermetrics1/worker_files"
 DIR_TO_FILES="/home/doc/Applications/minermetrics1/data"
@@ -27,7 +27,7 @@ CPM=$(echo $STATS  | jq .data.coinsPerMin)
 CPM=$(bc <<< "scale=8; ${CPM: 0:${#CPM}-4} / 10 ^ ${CPM: -1}")
 ETHOWNED=$(curl -s "https://api.etherscan.io/api?module=account&action=balance&address=$MINERADDR&tag=latest&apikey=$APITOKEN" | jq -r .result)
 GPUDATA=(NAME BUSID TEMP FAN GPUUTIL MEMUTIL MEMTOTAL MEMFREE MEMUSED POWDRAW POWLIMIT)
-FIELDSTOSHOW=( 0 1 2 3 8 7 9 10 )
+FIELDSTOSHOW=( 0 1 2 3 4 5 8 6 )
 #MINERSTATS=$(curl -s https://api.ethermine.org/miner/$MINERADDR/worker/$WORKER/currentStats)
 
 #nvidia-smi --query-gpu=name,pci.bus_id,temperature.gpu,fan.speed,utilization.gpu,utilization.memory,memory.total,memory.free,memory.used,power.draw,power.limit --format=csv > linux.miner
@@ -84,12 +84,26 @@ do
 		  NUMGPU=${line:0:1}
 		  MINERNAME=${line:1:5}
 		  DATADATE=${line:6:28}
+		  MINERSTATS=$(curl -s https://api.ethermine.org/miner/$MINERADDR/worker/$MINERNAME/currentStats)
+		  MINERCURRENTHASHRATE=$(bc <<< "scale=2; $(echo $MINERSTATS | jq .data.currentHashrate) / 1000000")
+		  MINERVALIDSHARES=$(echo $MINERSTATS | jq .data.validShares)
+		  MINERINVALIDSHARES=$(echo $MINERSTATS | jq .data.invalidShares)
 cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
     <table class=blueTable>
       <tr>
-        <th colspan=1>Miner: $MINERNAME</th>
+        <th colspan=1 width="20%">Miner: $MINERNAME</th>
         <th colspan=1>$NUMGPU GPUs</th>
+        <th colspan=1>Hash Rate: $MINERCURRENTHASHRATE MH/s</th>
         <td colspan=1 align="right">$DATADATE</td>
+      </tr>
+    </table>
+    <table class=blueTable>
+      <tr>
+        <td colspan=1 align="right" width="20%">Valid Shares</td>
+        <td colspan=1 align="left" width="30%">$MINERVALIDSHARES</td>
+        <td colspan=1 align="right" width="20%">Invalid Shares</td>
+        <td colspan=1 align="left" width="30%">$MINERINVALIDSHARES</td>
+        <td colspan=2></td>
       </tr>
     </table>
     <table class=blueTable>
@@ -123,7 +137,7 @@ EOF
 	  fi
 	  ((linenum=linenum+1))
   done < $MINERFILE
-  echo "    </table><br>" >> $DIR_TO_FILES/$WEBFILENAME
+  echo "    </table>" >> $DIR_TO_FILES/$WEBFILENAME
 done
 echo "</body></html>" >> $DIR_TO_FILES/$WEBFILENAME
 

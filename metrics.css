@@ -23,7 +23,7 @@ table.blueTable thead {
   border-bottom: 2px solid #444444;
 }
 table.blueTable thead th {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: bold;
   color: #FFFFFF;
   border-left: 2px solid #D0E4F5;
@@ -80,7 +80,7 @@ table.blueTable2 thead {
   border-bottom: 2px solid #444444;
 }
 table.blueTable2 thead th {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: bold;
   color: #FFFFFF;
   text-align: center;
