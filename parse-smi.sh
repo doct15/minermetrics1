@@ -127,7 +127,7 @@ EOF
 done
 echo "</body></html>" >> $DIR_TO_FILES/$WEBFILENAME
 
-echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $CSSFILENAME)"
+echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$CSSFILENAME)"
 echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME)"
 
 
