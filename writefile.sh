@@ -4,7 +4,7 @@
 # NUMGPU=1              - Number of GPUs
 # COMPUTER="gamer"      - Name of miner
 # SMICMD="nvidia-smi"   - Command to run nvidia-smi (different on windows)
-DIR_TO_FILES="."
+DIR_TO_FILES="/home/doc/Applications/minermetrics1/data"
 WORKING_FILE="$COMPUTER.miner"
 DESTINATION_DIR="Applications/minermetrics1/data"
 
