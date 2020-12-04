@@ -5,4 +5,4 @@ export NUMGPU=1
 export COMPUTER="gamer"
 export SMICMD="/mnt/c/Windows/System32/nvidia-smi.exe"
 
-./writefile.sh
+/home/doc/Applications/minermetrics1/writefile.sh

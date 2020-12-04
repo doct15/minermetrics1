@@ -5,5 +5,5 @@ export NUMGPU=2
 export COMPUTER="linux"
 export SMICMD="nvidia-smi"
 
-./writefile.sh
+/home/doc/Applications/minermetrics1/writefile.sh
 
