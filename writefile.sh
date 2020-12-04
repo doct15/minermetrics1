@@ -6,7 +6,7 @@
 # SMICMD="nvidia-smi"   - Command to run nvidia-smi (different on windows)
 DIR_TO_FILES="/home/doc/Applications/minermetrics1/data/"
 WORKING_FILE="$COMPUTER.miner"
-DESTINATION_DIR="Applications/minermetrics1/data"
+DESTINATION_DIR="/home/doc/Applications/minermetrics1/data"
 
 echo "$NUMGPU$COMPUTER$(date)" > $DIR_TO_FILES/$WORKING_FILE
 $SMICMD --query-gpu=name,pci.bus_id,temperature.gpu,fan.speed,utilization.gpu,utilization.memory,memory.total,memory.free,memory.used,power.draw,power.limit --format=csv >> $DIR_TO_FILES/$WORKING_FILE
