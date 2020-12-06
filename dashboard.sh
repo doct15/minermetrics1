@@ -2,7 +2,7 @@
 #
 
 # Wait for miners to deliver files
-sleep 60
+#sleep 60
 
 #DIR_TO_FILES="/home/metrics/minermetrics1/worker_files"
 DIR_TO_FILES="/home/doc/Applications/minermetrics1/data"
@@ -462,8 +462,8 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
 </html>
 EOF
 
-#echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$CSSFILENAME)"
-#echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME)"
+echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$CSSFILENAME)"
+echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME)"
 
 
 
