@@ -179,7 +179,7 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
       // Normalize some data
       UNPAID = (UNPAID/1000000000000000000).toFixed(6)
       CPM = CPM.toFixed(8);
-      CURRENTHASHRATE = (CURRENTHASHRATE/1000000).toFixed(2)
+      HASHRATE = (HASHRATE/1000000).toFixed(2)
 
       // Identify divs and canvas
       var t1 = document.getElementById("tab1");
