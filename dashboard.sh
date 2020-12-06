@@ -171,6 +171,15 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
       var MINERDATE = [ "${AMINERDATE[0]}", "${AMINERDATE[1]}", "${AMINERDATE[2]}" ];
       var MINERVALIDSHARES = [ ${AMINERVALIDSHARES[0]} , ${AMINERVALIDSHARES[1]} , ${AMINERVALIDSHARES[2]} ];
       var MINERINVALIDSHARES = [ ${AMINERINVALIDSHARES[0]}, ${AMINERINVALIDSHARES[1]}, ${AMINERINVALIDSHARES[2]} ];
+      //
+      // End of supplied data
+      //
+
+      // Normalize some data
+      UNPAID = (UNPAID/1000000000000000000).toFixed(6)
+      CPM = CPM.toFixed(8);
+
+      // Identify divs and canvas
       var t1 = document.getElementById("tab1");
       var t2 = document.getElementById("tab2");
       var t3 = document.getElementById("tab3");
@@ -300,20 +309,31 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
       }
 
       function write_header(){
-        chctx.font = "16px Arial";
-        chctx.fillStyle="LightGrey";
-        chctx.fillText(MINERADDR,5,18); 
-        chctx.fillText("Hash Rate: " + (HASHRATE/1000000).toFixed(2),420,18);
-        chctx.fillText("ETH: " + ETH,600,18);
-        chctx.font = "12px Arial";
-        chctx.fillStyle="Ivory";
-        chctx.fillText("Workers: " + WORKERS,5,50);       
-        chctx.fillText("Valid Shares: " + VALIDSHARES,420,50);
-        chctx.fillText("Invalid Shares: " + INVALIDSHARES,600,50);
-        chctx.fillText("Unpaid Balance: " + (UNPAID/1000000000000000000).toFixed(6),5,72);
-        chctx.fillText("ETH per min: " + CPM.toFixed(8),420,72);
-        chctx.fillText("1 ETH in USD: $" + ETHPRICE,600,72);
+        //<span class="tab_font">linux</span>
+        htext=document.getElementById("header1_div");
+        htext.innerHTML=\`
+          <table class="table_font" width="100%">
+            <tr>
+              <td>\${MINERADDR}</td>
+              <td>Hash Rate: \${HASHRATE}</td>
+              <td style="padding-left:60px">ETH: \${ETH}</td>
+            </tr>
+          </table>
+          <table class=table_font width="100%" style="color: Grey;">
+            <tr>
+              <td align=right>Workers:</td><td>\${WORKERS}</td>
+              <td align=right>Valid Shares:</td><td>\${VALIDSHARES}</td>
+              <td align=right>Invalid Shares:</td><td>\${INVALIDSHARES}</td>
+            </tr>
+            <tr>
+              <td align=right>Unpaid balance:</td><td>\${UNPAID}</td>
+              <td align=right>ETH per min:</td><td>\${CPM}</td>
+              <td align=right>1 ETH in USD:</td><td>$ \${ETHPRICE}</td>
+            </tr>
+          </table>
+        \`;
       }
+
 
       function write_miner_header(context, miner){
         context.font = "16px Arial";

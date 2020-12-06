@@ -56,3 +56,9 @@
   /*vertical-align: top;*/
   /*vertical-align: middle;*/
 }
+.table_font {
+  font-family: Arial;
+  font-size: 12pt;
+  color: Ivory;
+  padding: 0px;
+}
