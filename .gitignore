@@ -3,3 +3,4 @@ worker_files/*
 *.miner
 *.metrics
 *.html
+data/*
