@@ -4,3 +4,4 @@ worker_files/*
 *.metrics
 *.html
 data/*
+backup/*
