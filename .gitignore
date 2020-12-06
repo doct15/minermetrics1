@@ -1,7 +1,2 @@
 temp/*
 worker_files/*
-*.miner
-*.metrics
-*.html
-data/*
-backup/*
