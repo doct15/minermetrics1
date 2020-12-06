@@ -36,6 +36,7 @@ FIELDSTOSHOW=( 0 1 2 3 4 5 8 6 )
 cat  > $DIR_TO_FILES/$WEBFILENAME <<EOF
 <html>
   <head>
+    <meta http-equiv="refresh" content="300">
     <link rel="stylesheet" href="$CSSFILENAME" />
   </head>
   <body bgcolor=#000000>
@@ -64,7 +65,7 @@ cat  > $DIR_TO_FILES/$WEBFILENAME <<EOF
         <td colspan=1 align="left">$ETHPRICE</td>                
       </tr>
       <tr>      
-        <td colspan=6></td>
+        <td colspan=6 style="background-color:#FFFFFF"></td>
       </tr>
     </table>
     </br>
@@ -137,7 +138,7 @@ EOF
 	  fi
 	  ((linenum=linenum+1))
   done < $MINERFILE
-  echo "    </table>" >> $DIR_TO_FILES/$WEBFILENAME
+  echo "    <tr><td colspan=8 style="background-color:#FFFFFF"></td></tr></table>" >> $DIR_TO_FILES/$WEBFILENAME
 done
 echo "</body></html>" >> $DIR_TO_FILES/$WEBFILENAME
 
