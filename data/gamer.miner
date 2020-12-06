@@ -1,0 +1,3 @@
+1gamerSat Dec  5 23:50:01 PST 2020
+name, pci.bus_id, temperature.gpu, fan.speed [%], utilization.gpu [%], utilization.memory [%], memory.total [MiB], memory.free [MiB], memory.used [MiB], power.draw [W], power.limit [W]
+GeForce GTX 1080 Ti, 00000000:01:00.0, 80, 89 %, 100 %, 76 %, 11264 MiB, 4004 MiB, 7260 MiB, 198.68 W, 250.00 W

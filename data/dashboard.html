@@ -1,0 +1,360 @@
+
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="dashboard.css">
+  </head>
+  <body bgcolor="#262428">
+
+    <div id="header1_div" class="miner_header">
+      <canvas id="header1_canvas" height="80" width="1000">
+Your browser does not support the HTML5 canvas tag.</canvas>      
+    </div> 
+
+
+    <div id="tab1" class="tab_style_active">
+      <span class="tab_font">gamer</span>
+    </div>
+    <div id="tab2" class="tab_style_inactive">
+      <span class="tab_font">linux</span>
+    </div>
+    <div id="tab3" class="tab_style_inactive">
+      <span class="tab_font">miner</span>
+    </div>
+
+    <div id="db1_div" class="full_dashboard">
+      <canvas id="dash1_canvas" height="80" width="1000">
+Your browser does not support the HTML5 canvas tag.</canvas>
+      <canvas id="gpu00" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+    </div>
+
+
+    <div id="db2_div" class="full_dashboard">
+      <canvas id="dash2_canvas" height="80" width="1000">
+Your browser does not support the HTML5 canvas tag.</canvas>
+      <canvas id="gpu10" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+      <canvas id="gpu11" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+    </div>
+
+    <div id="db3_div" class="full_dashboard">
+      <canvas id="dash3_canvas" height="80" width="1000">
+Your browser does not support the HTML5 canvas tag.</canvas>      
+      <canvas id="gpu20" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+      <canvas id="gpu21" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+      <canvas id="gpu22" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+      <canvas id="gpu23" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+      <canvas id="gpu24" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+      <canvas id="gpu25" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+    </div>
+
+    <script>
+      // #262428 widget background and (inactive) tab background
+      // #353337 active tab background
+      // #19171A top left logo
+      //
+      // Below is data to be supplied from linux parsing script
+      //
+      var MINERADDR = "0xa4df0737ee0345271b41105e2e37a3eae471d772";
+      var HASHRATE = 236166666.6666667;
+      var ETH = 954856815755150031;
+      var WORKERS = 3;
+      var VALIDSHARES = 208;
+      var INVALIDSHARES = 0;
+      var UNPAID = 41704198504445740;
+      var CPM = 8.478678615250008e-06;
+      var ETHPRICE = 596.43;
+      var MINERS = [ "gamer", "linux", "miner" ]
+      var GPUS = [
+        [ "gamer", "GeForce GTX 1080 Ti", " 00000000:01:00.0",  82,  89,  199,  250,  ], 
+        [ "linux", "GeForce GTX 1060 6GB", " 00000000:01:00.0",  72,  71,  114,  120,  ], 
+        [ "linux", "GeForce GTX 1060 6GB", " 00000000:07:00.0",  67,  57,  113,  120,  ], 
+        [ "miner", "GeForce GTX 1070", " 00000000:01:00.0",  72,  90,  140,  151,  ], 
+        [ "miner", "GeForce GTX 1070", " 00000000:02:00.0",  78,  90,  138,  151,  ], 
+        [ "miner", "GeForce GTX 1070", " 00000000:03:00.0",  78,  90,  140,  151,  ], 
+        [ "miner", "GeForce GTX 1070", " 00000000:04:00.0",  78,  90,  140,  151,  ], 
+        [ "miner", "GeForce GTX 1070", " 00000000:05:00.0",  76,  90,  137,  151,  ], 
+        [ "miner", "GeForce GTX 1070", " 00000000:06:00.0",  78,  90,  137,  151,  ], 
+  ];
+      var MINERGPUS = [ 1, 2, 6 ];
+      var MINERHASHRATES =[ 32222222.222222224, 31111111.111111112, 172833333.33333334 ];
+      var MINERDATE = [ "Sat Dec  5 18:00:01 PST 2020", "Sat Dec  5 18:00:01 PST 2020", "Sat Dec  5 18:00:01 PST 2020" ];
+      var MINERVALIDSHARES = [ 29 , 28 , 151 ];
+      var MINERINVALIDSHARES = [ 0, 0, 0 ];
+      var t1 = document.getElementById("tab1");
+      var t2 = document.getElementById("tab2");
+      var t3 = document.getElementById("tab3");
+      var d1 = document.getElementById("db1_div");
+      var d2 = document.getElementById("db2_div");
+      var d3 = document.getElementById("db3_div");
+      var ch = document.getElementById("header1_canvas");
+      var chctx = ch.getContext("2d");
+      var dc1 = document.getElementById("dash1_canvas");
+      var dc1ctx = dc1.getContext("2d");
+      var dc2 = document.getElementById("dash2_canvas");
+      var dc2ctx = dc2.getContext("2d");
+      var dc3 = document.getElementById("dash3_canvas");
+      var dc3ctx = dc3.getContext("2d");
+      var cgpu00 = document.getElementById("gpu00");
+      var gpu00ctx = cgpu00.getContext("2d");
+      var cgpu10 = document.getElementById("gpu10");
+      var gpu10ctx = cgpu10.getContext("2d");
+      var cgpu11 = document.getElementById("gpu11");
+      var gpu11ctx = cgpu11.getContext("2d");
+      var cgpu20 = document.getElementById("gpu20");
+      var gpu20ctx = cgpu20.getContext("2d");
+      var cgpu21 = document.getElementById("gpu21");
+      var gpu21ctx = cgpu21.getContext("2d");
+      var cgpu22 = document.getElementById("gpu22");
+      var gpu22ctx = cgpu22.getContext("2d");
+      var cgpu23 = document.getElementById("gpu23");
+      var gpu23ctx = cgpu23.getContext("2d");
+      var cgpu24 = document.getElementById("gpu24");
+      var gpu24ctx = cgpu24.getContext("2d");
+      var cgpu25 = document.getElementById("gpu25");
+      var gpu25ctx = cgpu25.getContext("2d");
+      var pi = Math.PI;
+
+      // dc1ctx.fillStyle="black";
+      // dc1ctx.fillRect(0,0,dc1.width,dc1.height);
+      write_miner_header(dc1ctx,0);
+      write_miner_header(dc2ctx,1);
+      write_miner_header(dc3ctx,2);
+
+      window.onload=init();
+
+      function init(){
+        //document.write('Here<br>');
+        t1.style.top = "110";
+        t1.onclick = set_tab_t1_active;
+
+        t2.style.top = "141";
+        t2.onclick = set_tab_t2_active;
+
+        t3.style.top = "172";           
+        t3.onclick = set_tab_t3_active;
+        write_header();
+
+        do_widget(gpu00ctx, GPUS[0][1], GPUS[0][2], GPUS[0][3], GPUS[0][4], GPUS[0][5], GPUS[0][6]);
+        do_widget(gpu10ctx, GPUS[1][1], GPUS[1][2], GPUS[1][3], GPUS[1][4], GPUS[1][5], GPUS[1][6]);
+        do_widget(gpu11ctx, GPUS[2][1], GPUS[2][2], GPUS[2][3], GPUS[2][4], GPUS[2][5], GPUS[2][6]);
+        do_widget(gpu20ctx, GPUS[3][1], GPUS[3][2], GPUS[3][3], GPUS[3][4], GPUS[3][5], GPUS[3][6]);
+        do_widget(gpu21ctx, GPUS[4][1], GPUS[4][2], GPUS[4][3], GPUS[4][4], GPUS[4][5], GPUS[4][6]);
+        do_widget(gpu22ctx, GPUS[5][1], GPUS[5][2], GPUS[5][3], GPUS[5][4], GPUS[5][5], GPUS[5][6]);
+        do_widget(gpu23ctx, GPUS[6][1], GPUS[6][2], GPUS[6][3], GPUS[6][4], GPUS[6][5], GPUS[6][6]);
+        do_widget(gpu24ctx, GPUS[7][1], GPUS[7][2], GPUS[7][3], GPUS[7][4], GPUS[7][5], GPUS[7][6]);
+        do_widget(gpu25ctx, GPUS[8][1], GPUS[8][2], GPUS[8][3], GPUS[8][4], GPUS[8][5], GPUS[8][6]);
+
+
+
+        d1.style.display = "block";
+        d2.style.display = "none";
+        d3.style.display = "none";
+      }
+
+      function do_widget(context, name, busid, temp, fan, poweruse, powermax){
+          // document.write(name + busid + "<br>")
+          drawHeader(context,name,busid);
+          // drawFan(context,x,y,fanspeed)
+          drawFan(context,428,272,fan);
+          // drawThermoMeter(ctx,bottomleftx,bottomlefty,tempmax,tempmin,temp,roundedcornerpixels,tempwidth);
+          drawThermoMeter(context,22,125,84,20,temp,5,20);
+          // drawPower(context,x,y,powermax,powermin,poweruse,scale)
+          drawPower(context,150,65,powermax,0,poweruse,.35);
+      }
+
+      function set_tab_t1_active(){
+        t1.className = "tab_style_active";
+        t2.className = "tab_style_inactive";
+        t3.className = "tab_style_inactive";
+        d1.style.display = "block";
+        d2.style.display = "none";
+        d3.style.display = "none";
+      }
+
+      function set_tab_t2_active(){
+        t1.className = "tab_style_inactive";
+        t2.className = "tab_style_active";
+        t3.className = "tab_style_inactive";
+        d1.style.display = "none";
+        d2.style.display = "block";
+        d3.style.display = "none";
+      }
+
+      function set_tab_t3_active(){
+        t1.className = "tab_style_inactive";
+        t2.className = "tab_style_inactive";
+        t3.className = "tab_style_active";
+        d1.style.display = "none";
+        d2.style.display = "none";
+        d3.style.display = "block";
+      }
+
+      function write_header(){
+        chctx.font = "16px Arial";
+        chctx.fillStyle="LightGrey";
+        chctx.fillText(MINERADDR,5,18); 
+        chctx.fillText("Hash Rate: " + (HASHRATE/1000000).toFixed(2),420,18);
+        chctx.fillText("ETH: " + ETH,600,18);
+        chctx.font = "12px Arial";
+        chctx.fillStyle="Ivory";
+        chctx.fillText("Workers: " + WORKERS,5,50);       
+        chctx.fillText("Valid Shares: " + VALIDSHARES,420,50);
+        chctx.fillText("Invalid Shares: " + INVALIDSHARES,600,50);
+        chctx.fillText("Unpaid Balance: " + (UNPAID/1000000000000000000).toFixed(6),5,72);
+        chctx.fillText("ETH per min: " + CPM.toFixed(8),420,72);
+        chctx.fillText("1 ETH in USD: $" + ETHPRICE,600,72);
+      }
+
+      function write_miner_header(context, miner){
+        context.font = "16px Arial";
+        context.fillStyle="LightGrey";
+        context.fillText("Miner: " + MINERS[miner],5,18);
+        context.fillText("Hash Rate: " + (MINERHASHRATES[miner]/1000000).toFixed(2),420,18);
+        context.font = "14px Arial";
+        context.fillText("Date: " + MINERDATE[miner],600,18);
+        context.font = "12px Arial";
+        context.fillText("Valid Shares: " + MINERVALIDSHARES[miner],420,50);
+        context.fillText("Invalid Shares: " + MINERINVALIDSHARES[miner],600,50);
+      }
+
+  function drawHeader(context,name,busid){
+    context.fillStyle="Ivory";
+    context.font = "12px Arial";
+    context.fillText(name,7,20);
+    context.fillText(busid,152,20);
+  }
+
+  function drawPower(context,x,y,powermax,powermin,poweruse,scale){
+    context.save();
+    context.translate(x,y);
+    context.save();
+    context.scale(scale,scale);
+    //pixelshigh=powermax-powermin;
+    pixelshigh=151;
+    pixelswidth=pixelshigh*.7;
+    vline=pixelshigh*.4;
+    hline=pixelswidth*.2;
+    context.strokeStyle="Grey";
+    context.fillStyle="blue";
+    context.beginPath();
+    context.moveTo(x,y);
+    context.lineTo(x-hline,y);
+    context.lineTo(x+hline,y-vline*1.5);
+    context.lineTo(x+hline,y-vline*.5);
+    context.lineTo(x+hline*2,y-vline*.5);
+    context.lineTo(x,y+vline);
+    context.lineTo(x,y);
+    context.fill();
+    context.stroke();
+    context.restore();
+    context.restore();
+    context.fillStyle="Ivory";
+    context.font = "12px Arial";
+    context.fillText(poweruse + ' / ' + powermax + 'w',x+27,y+63);
+    context.fillStyle="LightGrey";
+    context.font="9px Arial";
+    context.fillText('AC power',x+36,y+77);
+  }
+
+  function drawThermoMeter(context,x,y,tempmax,tempmin,temp,rc,tempwidth){
+    // drawThermoMeter(ctx,bottomleftx,bottomlefty,tempmax,tempmin,temp,roundedcornerpixels,tempwidth);
+
+    context.fillStyle="LightGrey";
+    context.strokeStyle="LightGrey";
+
+    // Setup gradient for Thermometer
+    var grdtemp = context.createLinearGradient(x,y-tempmax+tempmin-rc,x,y);
+    grdtemp.addColorStop(1,"yellow");
+    grdtemp.addColorStop(0,"red");
+    context.beginPath();
+    context.moveTo(x,y);
+    context.lineTo(x,y-tempmax+tempmin);
+    context.arc(x+rc,y-tempmax+tempmin,rc,pi,pi*1.5);
+    context.lineTo(x+rc+tempwidth,y-tempmax+tempmin-rc);
+    context.arc(x+rc+tempwidth,y-tempmax+tempmin,rc,pi*1.5,0);
+    context.lineTo(x+rc+rc+tempwidth,y);
+    context.lineTo(x,y);
+    context.stroke();
+    context.font = "10px Arial";
+    context.beginPath(); // min tick
+    context.moveTo(x+rc+rc+tempwidth+rc,y);
+    context.lineTo(x+rc+rc+tempwidth+rc+rc,y);
+    context.stroke();
+    context.beginPath(); // temp tick
+    context.moveTo(x+rc+rc+tempwidth+rc,y-temp+tempmin-rc);
+    context.lineTo(x+rc+rc+tempwidth+rc+rc,y-temp+tempmin-rc);
+    context.stroke();
+    context.fillStyle=grdtemp;
+    context.fillRect(x + 1, y-temp+tempmin-rc, tempwidth + rc + rc - 2, temp - tempmin + rc);
+    context.fillStyle="LightGrey";
+    context.fillText(tempmin + "\u00B0",x+rc+rc+tempwidth+rc+rc+rc,y+rc/2);
+    context.fillStyle="Ivory"
+    context.fillText(temp + "\u00B0",x+rc+rc+tempwidth+rc+rc+rc,y-temp+tempmin-rc+rc/2);
+    context.fillStyle="LightGrey"
+    context.font="9px Arial";
+    context.fillText('Temperature',x-rc-rc,y+rc*3+2);
+  }
+
+  // Draw fan blade
+  function drawFanBlade(context){
+    // called by the drawFan() function
+    context.beginPath();
+    context.arc(-59,-20,50,1.94*pi,1.6*pi,1);
+    context.arc(-7,-18,64,1.3*pi,1.49*pi);
+    context.arc(-23,-43,42,1.62*pi,.12*pi);
+    context.arc(0,0,31,1.6*pi,1.4*pi,1);
+    context.fill();
+    context.stroke();
+  }
+
+  function drawFan(context,x,y,speed){
+    // drawFan(context,x,y,fanspeed)
+    var fanScale=.3;
+    context.save();
+    context.fillStyle="Grey"
+    context.strokeStyle="Grey"
+    context.scale(fanScale,fanScale);
+
+    for (degrees=0; degrees<360; degrees=degrees+60){
+      var rad = degrees * (pi/180);
+      context.save();
+      context.translate(x,y);
+      context.rotate(rad);
+      drawFanBlade(context);
+      context.restore();
+    }
+
+    context.save();
+    context.fillStyle="Black";
+    context.strokeStyle="Black";
+    context.translate(x,y);
+    context.beginPath();
+    context.arc(0,0,31,0,2*pi);
+    context.fill();
+    context.stroke();
+    context.beginPath();
+    context.lineWidth=2;
+    context.arc(0,0,91,0,2*pi);
+    context.stroke();
+    context.restore();
+    context.restore();
+    context.fillStyle="Ivory";
+    context.font = "12px Arial";
+    context.fillText(speed + "%",x*fanScale-12,y*fanScale+46);
+    context.fillStyle="LightGrey";
+    context.font="9px Arial";
+    context.fillText('Fan speed',x*fanScale-22,y*fanScale+60);
+  }
+
+
+    </script>
+  </body>
+</html>
