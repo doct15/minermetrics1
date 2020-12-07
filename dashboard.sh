@@ -247,37 +247,41 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
       window.onload=init();
 
       function init(){
-        //document.write('Here<br>');
-        t1.style.top = "110";
-        t1.onclick = set_tab_t1_active;
+        if (document.cookie.indexOf('is_reloaded')==-1) {
+          draw_logo();
 
-        t2.style.top = "141";
-        t2.onclick = set_tab_t2_active;
+          t1.style.top = "110";
+          t1.onclick = set_tab_t1_active;
 
-        t3.style.top = "172";           
-        t3.onclick = set_tab_t3_active;
+          t2.style.top = "141";
+          t2.onclick = set_tab_t2_active;
 
-        draw_logo();
-        write_header();
+          t3.style.top = "172";           
+          t3.onclick = set_tab_t3_active;
 
-        write_miner_header(d1h,0);
-        write_miner_header(d2h,1);
-        write_miner_header(d3h,2);
+          d1.style.display = "block";
+          d2.style.display = "none";
+          d3.style.display = "none";
 
-        do_widget(gpu00ctx, GPUS[0][1], GPUS[0][2], GPUS[0][3], GPUS[0][4], GPUS[0][5], GPUS[0][6]);
-        do_widget(gpu10ctx, GPUS[1][1], GPUS[1][2], GPUS[1][3], GPUS[1][4], GPUS[1][5], GPUS[1][6]);
-        do_widget(gpu11ctx, GPUS[2][1], GPUS[2][2], GPUS[2][3], GPUS[2][4], GPUS[2][5], GPUS[2][6]);
-        do_widget(gpu20ctx, GPUS[3][1], GPUS[3][2], GPUS[3][3], GPUS[3][4], GPUS[3][5], GPUS[3][6]);
-        do_widget(gpu21ctx, GPUS[4][1], GPUS[4][2], GPUS[4][3], GPUS[4][4], GPUS[4][5], GPUS[4][6]);
-        do_widget(gpu22ctx, GPUS[5][1], GPUS[5][2], GPUS[5][3], GPUS[5][4], GPUS[5][5], GPUS[5][6]);
-        do_widget(gpu23ctx, GPUS[6][1], GPUS[6][2], GPUS[6][3], GPUS[6][4], GPUS[6][5], GPUS[6][6]);
-        do_widget(gpu24ctx, GPUS[7][1], GPUS[7][2], GPUS[7][3], GPUS[7][4], GPUS[7][5], GPUS[7][6]);
-        do_widget(gpu25ctx, GPUS[8][1], GPUS[8][2], GPUS[8][3], GPUS[8][4], GPUS[8][5], GPUS[8][6]);
+        } else {
+          document.cookie = 'is_reloaded=1';
+        }
+          write_header();
 
+          write_miner_header(d1h,0);
+          write_miner_header(d2h,1);
+          write_miner_header(d3h,2);
 
-        d1.style.display = "block";
-        d2.style.display = "none";
-        d3.style.display = "none";
+          do_widget(gpu00ctx, GPUS[0][1], GPUS[0][2], GPUS[0][3], GPUS[0][4], GPUS[0][5], GPUS[0][6]);
+          do_widget(gpu10ctx, GPUS[1][1], GPUS[1][2], GPUS[1][3], GPUS[1][4], GPUS[1][5], GPUS[1][6]);
+          do_widget(gpu11ctx, GPUS[2][1], GPUS[2][2], GPUS[2][3], GPUS[2][4], GPUS[2][5], GPUS[2][6]);
+          do_widget(gpu20ctx, GPUS[3][1], GPUS[3][2], GPUS[3][3], GPUS[3][4], GPUS[3][5], GPUS[3][6]);
+          do_widget(gpu21ctx, GPUS[4][1], GPUS[4][2], GPUS[4][3], GPUS[4][4], GPUS[4][5], GPUS[4][6]);
+          do_widget(gpu22ctx, GPUS[5][1], GPUS[5][2], GPUS[5][3], GPUS[5][4], GPUS[5][5], GPUS[5][6]);
+          do_widget(gpu23ctx, GPUS[6][1], GPUS[6][2], GPUS[6][3], GPUS[6][4], GPUS[6][5], GPUS[6][6]);
+          do_widget(gpu24ctx, GPUS[7][1], GPUS[7][2], GPUS[7][3], GPUS[7][4], GPUS[7][5], GPUS[7][6]);
+          do_widget(gpu25ctx, GPUS[8][1], GPUS[8][2], GPUS[8][3], GPUS[8][4], GPUS[8][5], GPUS[8][6]);
+
       }
 
       function draw_logo(){
