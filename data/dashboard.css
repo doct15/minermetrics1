@@ -1,31 +1,26 @@
 .full_dashboard {
-  /* background: #fff; */
   position: fixed;
   bottom: 0;
   right: 0;
   left: 100px;
   top: 80px;
   background-color: #353337;
-  /* border-style: solid; */
-  /* border-color: #262428 */
 }
 .miner_header {
-  /* position: absolute;
-  left: 100px;
-  top: 0px;
-  width: 1000px; 
-  height: 88px; */
   background-color: #353337;
-  /* border-style: solid; */
-  /* border-color: #262428 */
   position: fixed;
   top: 0;
   left: 100px;
   right: 0;
 }
+.miners_header {
+  background-color: #353337;
+  position: relative;
+  top: 0;
+  left: 0px;
+  right: 0;
+}
 .miner_canvas {
-  /*width: 2000px;
-  height: 80px;*/
   border: 10px;
   border-color: cyan;
   background-color: #353337;
@@ -57,12 +52,15 @@
   martin-top: 0px;
   top: 5;
   left:10;
-  /*vertical-align: top;*/
-  /*vertical-align: middle;*/
 }
 .table_font {
   font-family: Arial;
   font-size: 12pt;
   color: Ivory;
   padding: 0px;
+}
+.canvas_style {
+  border:1px;
+  solid #d3d3d3;
+  margin: 20px;"
 }

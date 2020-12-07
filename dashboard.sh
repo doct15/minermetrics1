@@ -46,7 +46,6 @@ cat  > $DIR_TO_FILES/$WEBFILENAME <<EOF
       <p></p>
     </div> 
 
-
     <div id="tab1" class="tab_style_active">
       <span class="tab_font">gamer</span>
     </div>
@@ -58,36 +57,38 @@ cat  > $DIR_TO_FILES/$WEBFILENAME <<EOF
     </div>
 
     <div id="db1_div" class="full_dashboard">
-      <canvas id="dash1_canvas" height="80" width="1000">
-Your browser does not support the HTML5 canvas tag.</canvas>
-      <canvas id="gpu00" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
+      <div id="db1_divh" class="miners_header">
+        <p></p>
+      </div>
+      <canvas id="gpu00" width="260" height="160" class="canvas_style">
 Your browser does not support the HTML5 canvas tag.</canvas>
     </div>
 
-
     <div id="db2_div" class="full_dashboard">
-      <canvas id="dash2_canvas" height="80" width="1000">
+      <div id="db2_divh" class="miners_header">
+        <p></p>
+      </div>
+      <canvas id="gpu10" width="260" height="160" class="canvas_style">
 Your browser does not support the HTML5 canvas tag.</canvas>
-      <canvas id="gpu10" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
-Your browser does not support the HTML5 canvas tag.</canvas>
-      <canvas id="gpu11" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
+      <canvas id="gpu11" width="260" height="160" class="canvas_style">
 Your browser does not support the HTML5 canvas tag.</canvas>
     </div>
 
     <div id="db3_div" class="full_dashboard">
-      <canvas id="dash3_canvas" height="80" width="1000">
-Your browser does not support the HTML5 canvas tag.</canvas>      
-      <canvas id="gpu20" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
+      <div id="db3_divh" class="miners_header">
+        <p></p>
+      </div>
+      <canvas id="gpu20" width="260" height="160" class="canvas_style">
 Your browser does not support the HTML5 canvas tag.</canvas>
-      <canvas id="gpu21" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
+      <canvas id="gpu21" width="260" height="160" class="canvas_style"">
 Your browser does not support the HTML5 canvas tag.</canvas>
-      <canvas id="gpu22" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
+      <canvas id="gpu22" width="260" height="160" class="canvas_style"">
 Your browser does not support the HTML5 canvas tag.</canvas>
-      <canvas id="gpu23" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
+      <canvas id="gpu23" width="260" height="160" class="canvas_style">
 Your browser does not support the HTML5 canvas tag.</canvas>
-      <canvas id="gpu24" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
+      <canvas id="gpu24" width="260" height="160" class="canvas_style"">
 Your browser does not support the HTML5 canvas tag.</canvas>
-      <canvas id="gpu25" width="260" height="160" style="border:1px solid #d3d3d3;margin: 20px;">
+      <canvas id="gpu25" width="260" height="160" class="canvas_style"">
 Your browser does not support the HTML5 canvas tag.</canvas>
     </div>
 
@@ -176,25 +177,28 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
       //
 
       // Normalize some data
-      UNPAID = (UNPAID/1000000000000000000).toFixed(6)
-      CPM = CPM.toFixed(8);
-      HASHRATE = (HASHRATE/1000000).toFixed(2)
+      UNPAID = (UNPAID/1000000000000000000).toFixed(6);
+      CPM = CPM.toFixed(8);;
+      HASHRATE = (HASHRATE/1000000).toFixed(2);
 
       // Identify divs and canvas
       var t1 = document.getElementById("tab1");
       var t2 = document.getElementById("tab2");
       var t3 = document.getElementById("tab3");
       var d1 = document.getElementById("db1_div");
+      var d1h = document.getElementById("db1_divh");
       var d2 = document.getElementById("db2_div");
+      var d2h = document.getElementById("db2_divh");
       var d3 = document.getElementById("db3_div");
+      var d3h = document.getElementById("db3_divh");
       //var ch = document.getElementById("header1_canvas");
       //var chctx = ch.getContext("2d");
-      var dc1 = document.getElementById("dash1_canvas");
-      var dc1ctx = dc1.getContext("2d");
-      var dc2 = document.getElementById("dash2_canvas");
-      var dc2ctx = dc2.getContext("2d");
-      var dc3 = document.getElementById("dash3_canvas");
-      var dc3ctx = dc3.getContext("2d");
+      //var dc1 = document.getElementById("dash1_canvas");
+      //var dc1ctx = dc1.getContext("2d");
+      //var dc2 = document.getElementById("dash2_canvas");
+      //var dc2ctx = dc2.getContext("2d");
+      //var dc3 = document.getElementById("dash3_canvas");
+      //var dc3ctx = dc3.getContext("2d");
       var cgpu00 = document.getElementById("gpu00");
       var gpu00ctx = cgpu00.getContext("2d");
       gpu00ctx.fillStyle="#262428";
@@ -236,9 +240,9 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
 
       // dc1ctx.fillStyle="black";
       // dc1ctx.fillRect(0,0,dc1.width,dc1.height);
-      write_miner_header(dc1ctx,0);
-      write_miner_header(dc2ctx,1);
-      write_miner_header(dc3ctx,2);
+      write_miner_header(d1h,0);
+      write_miner_header(d2h,1);
+      write_miner_header(d3h,2);
 
       window.onload=init();
 
@@ -310,7 +314,6 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
       }
 
       function write_header(){
-        //<span class="tab_font">linux</span>
         htext=document.getElementById("header1_div");
         htext.innerHTML=\`
           <table class="table_font" width="100%">
@@ -333,18 +336,45 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
         \`;
       }
 
+      function write_miner_header(div, miner){
+        var MINERHASHRATE=(MINERHASHRATES[miner]/1000000).toFixed(2)
+        div.innerHTML=\`
+          <table class="table_font" width="100%">
+            <tr>
+              <td colspan=2 width="30%">Miner: \${MINERS[miner]}</td>
+              <td align=right width="15%">Hash Rate:</td><td width="10%">\${MINERHASHRATE}</td>
+              <td align=right colspan=2 style="font-size: 10pt;" width="25%">Date: \${MINERDATE[miner]}</td>
+            </tr>
+            <tr style="color: Grey;">
+              <td colspan=2></td>
+              <td align=right>Valid Shares:</td><td width="10%">\${MINERVALIDSHARES[miner]}</td>
+              <td align=right>Invalid Shares:</td><td width="10%">\${MINERINVALIDSHARES[miner]}</td>
+            </tr>
+          </table>
+        \`;        
 
-      function write_miner_header(context, miner){
-        context.font = "16px Arial";
-        context.fillStyle="LightGrey";
-        context.fillText("Miner: " + MINERS[miner],5,18);
-        context.fillText("Hash Rate: " + (MINERHASHRATES[miner]/1000000).toFixed(2),420,18);
-        context.font = "14px Arial";
-        context.fillText("Date: " + MINERDATE[miner],600,18);
-        context.font = "12px Arial";
-        context.fillText("Valid Shares: " + MINERVALIDSHARES[miner],420,50);
-        context.fillText("Invalid Shares: " + MINERINVALIDSHARES[miner],600,50);
+        //context.font = "16px Arial";
+        //context.fillStyle="LightGrey";
+        //context.fillText("Miner: " + MINERS[miner],5,18);
+        //context.fillText("Hash Rate: " + (MINERHASHRATES[miner]/1000000).toFixed(2),420,18);
+        //context.font = "14px Arial";
+        //context.fillText("Date: " + MINERDATE[miner],600,18);
+        //context.font = "12px Arial";
+        //context.fillText("Valid Shares: " + MINERVALIDSHARES[miner],420,50);
+        //context.fillText("Invalid Shares: " + MINERINVALIDSHARES[miner],600,50);
       }
+
+      //function write_miner_header(context, miner){
+      //  context.font = "16px Arial";
+      //  context.fillStyle="LightGrey";
+      //  context.fillText("Miner: " + MINERS[miner],5,18);
+      //  context.fillText("Hash Rate: " + (MINERHASHRATES[miner]/1000000).toFixed(2),420,18);
+      //  context.font = "14px Arial";
+      //  context.fillText("Date: " + MINERDATE[miner],600,18);
+      //  context.font = "12px Arial";
+      //  context.fillText("Valid Shares: " + MINERVALIDSHARES[miner],420,50);
+      //  context.fillText("Invalid Shares: " + MINERINVALIDSHARES[miner],600,50);
+      //}
 
   function drawHeader(context,name,busid){
     context.fillStyle="Ivory";
