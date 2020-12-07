@@ -67,14 +67,14 @@ Your browser does not support the HTML5 canvas tag.</canvas>
       // Below is data to be supplied from linux parsing script
       //
       var MINERADDR = "0xa4df0737ee0345271b41105e2e37a3eae471d772";
-      var HASHRATE = 244055555.55555555;
+      var HASHRATE = 231833333.33333334;
       var ETH = 954856815755150031;
       var WORKERS = 3;
-      var VALIDSHARES = 219;
+      var VALIDSHARES = 208;
       var INVALIDSHARES = 0;
-      var UNPAID = 59409258266039464;
-      var CPM = 8.185640628752609e-06;
-      var ETHPRICE = 594.92;
+      var UNPAID = 59776172674833940;
+      var CPM = 8.180708464597705e-06;
+      var ETHPRICE = 594.88;
       var MINERS = [ "gamer", "linux", "miner" ]
       var GPUS = [
         [ "gamer", "GeForce GTX 1080 Ti", " 00000000:01:00.0",  71,  91,  194,  250,  ], 
@@ -88,9 +88,9 @@ Your browser does not support the HTML5 canvas tag.</canvas>
         [ "miner", "GeForce GTX 1070", " 00000000:06:00.0",  77,  90,  137,  151,  ], 
   ];
       var MINERGPUS = [ 1, 2, 6 ];
-      var MINERHASHRATES =[ 41111111.11111111, 35555555.55555555, 167388888.8888889 ];
+      var MINERHASHRATES =[ 40000000, 33333333.333333332, 158500000 ];
       var MINERDATE = [ "Sun Dec  6 18:15:01 PST 2020", "Sun Dec  6 18:15:02 PST 2020", "Sun Dec  6 18:15:01 PST 2020" ];
-      var MINERVALIDSHARES = [ 37 , 32 , 150 ];
+      var MINERVALIDSHARES = [ 36 , 30 , 142 ];
       var MINERINVALIDSHARES = [ 0, 0, 0 ];
       //
       // End of supplied data
@@ -164,7 +164,8 @@ Your browser does not support the HTML5 canvas tag.</canvas>
       window.onload=init();
 
       function init(){
-        if (document.cookie.indexOf('is_reloaded')==-1) {
+        // if (document.cookie.indexOf('is_reloaded')==-1) {
+        if (!(sessionStorage.getItem("is_reloaded"))) {
           draw_logo();
 
           t1.style.top = "110";
@@ -181,7 +182,8 @@ Your browser does not support the HTML5 canvas tag.</canvas>
           d3.style.display = "none";
 
         } else {
-          document.cookie = 'is_reloaded=1';
+          // document.cookie = 'is_reloaded=1';
+          sessionStorage.setItem("is_reloaded", "true");
         }
           write_header();
 

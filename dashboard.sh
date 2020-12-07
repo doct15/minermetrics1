@@ -247,7 +247,8 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
       window.onload=init();
 
       function init(){
-        if (document.cookie.indexOf('is_reloaded')==-1) {
+        // if (document.cookie.indexOf('is_reloaded')==-1) {
+        if (!(sessionStorage.getItem("is_reloaded"))) {
           draw_logo();
 
           t1.style.top = "110";
@@ -264,7 +265,8 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
           d3.style.display = "none";
 
         } else {
-          document.cookie = 'is_reloaded=1';
+          // document.cookie = 'is_reloaded=1';
+          sessionStorage.setItem("is_reloaded", "true");
         }
           write_header();
 
