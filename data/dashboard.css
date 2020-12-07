@@ -62,7 +62,8 @@
 .canvas_style {
   border:1px;
   solid #d3d3d3;
-  margin: 20px;"
+  margin-left: 20px;
+  margin-top: 20px;
 }
 .logo_canvas {
   position: absolute;
