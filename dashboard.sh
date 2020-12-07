@@ -42,6 +42,10 @@ cat  > $DIR_TO_FILES/$WEBFILENAME <<EOF
   </head>
   <body bgcolor="#262428">
 
+    <form name="refreshForm">
+      <input type="hidden" name="visited" value="" />
+    </form>
+
     <div id="header1_div" class="miner_header">
       <p></p>
     </div> 
@@ -248,7 +252,8 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
 
       function init(){
         // if (document.cookie.indexOf('is_reloaded')==-1) {
-        if (!(sessionStorage.getItem("is_reloaded"))) {
+        // if (!(sessionStorage.getItem("is_reloaded"))) {
+        if (document.refreshForm.visited.value == "") {
           draw_logo();
 
           t1.style.top = "110";
@@ -264,9 +269,9 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
           d2.style.display = "none";
           d3.style.display = "none";
 
-        } else {
           // document.cookie = 'is_reloaded=1';
-          sessionStorage.setItem("is_reloaded", "true");
+          // sessionStorage.setItem("is_reloaded", "true");
+          document.refreshForm.visited.value = "1";
         }
           write_header();
 

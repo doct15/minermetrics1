@@ -6,6 +6,10 @@
   </head>
   <body bgcolor="#262428">
 
+    <form name="refreshForm">
+      <input type="hidden" name="visited" value="" />
+    </form>
+    
     <div id="header1_div" class="miner_header">
       <p></p>
     </div> 
@@ -67,13 +71,13 @@ Your browser does not support the HTML5 canvas tag.</canvas>
       // Below is data to be supplied from linux parsing script
       //
       var MINERADDR = "0xa4df0737ee0345271b41105e2e37a3eae471d772";
-      var HASHRATE = 231833333.33333334;
+      var HASHRATE = 235555555.55555555;
       var ETH = 954856815755150031;
       var WORKERS = 3;
-      var VALIDSHARES = 208;
+      var VALIDSHARES = 212;
       var INVALIDSHARES = 0;
-      var UNPAID = 59776172674833940;
-      var CPM = 8.180708464597705e-06;
+      var UNPAID = 60022204705315270;
+      var CPM = 8.186300671104944e-06;
       var ETHPRICE = 594.88;
       var MINERS = [ "gamer", "linux", "miner" ]
       var GPUS = [
@@ -88,9 +92,9 @@ Your browser does not support the HTML5 canvas tag.</canvas>
         [ "miner", "GeForce GTX 1070", " 00000000:06:00.0",  77,  90,  137,  151,  ], 
   ];
       var MINERGPUS = [ 1, 2, 6 ];
-      var MINERHASHRATES =[ 40000000, 33333333.333333332, 158500000 ];
+      var MINERHASHRATES =[ 35555555.55555555, 32222222.222222224, 167777777.7777778 ];
       var MINERDATE = [ "Sun Dec  6 18:15:01 PST 2020", "Sun Dec  6 18:15:02 PST 2020", "Sun Dec  6 18:15:01 PST 2020" ];
-      var MINERVALIDSHARES = [ 36 , 30 , 142 ];
+      var MINERVALIDSHARES = [ 32 , 29 , 151 ];
       var MINERINVALIDSHARES = [ 0, 0, 0 ];
       //
       // End of supplied data
@@ -165,7 +169,8 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 
       function init(){
         // if (document.cookie.indexOf('is_reloaded')==-1) {
-        if (!(sessionStorage.getItem("is_reloaded"))) {
+        // if (!(sessionStorage.getItem("is_reloaded"))) {
+        if (document.refreshForm.visited.value == "") {
           draw_logo();
 
           t1.style.top = "110";
@@ -181,9 +186,9 @@ Your browser does not support the HTML5 canvas tag.</canvas>
           d2.style.display = "none";
           d3.style.display = "none";
 
-        } else {
           // document.cookie = 'is_reloaded=1';
-          sessionStorage.setItem("is_reloaded", "true");
+          // sessionStorage.setItem("is_reloaded", "true");
+          document.refreshForm.visited.value = "1";
         }
           write_header();
 
