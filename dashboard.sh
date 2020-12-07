@@ -46,6 +46,9 @@ cat  > $DIR_TO_FILES/$WEBFILENAME <<EOF
       <p></p>
     </div> 
 
+    <canvas id="logo" width="96" height="68" class="logo_canvas">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
     <div id="tab1" class="tab_style_active">
       <span class="tab_font">gamer</span>
     </div>
@@ -240,9 +243,6 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
 
       // dc1ctx.fillStyle="black";
       // dc1ctx.fillRect(0,0,dc1.width,dc1.height);
-      write_miner_header(d1h,0);
-      write_miner_header(d2h,1);
-      write_miner_header(d3h,2);
 
       window.onload=init();
 
@@ -256,7 +256,13 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
 
         t3.style.top = "172";           
         t3.onclick = set_tab_t3_active;
+
+        draw_logo();
         write_header();
+
+        write_miner_header(d1h,0);
+        write_miner_header(d2h,1);
+        write_miner_header(d3h,2);
 
         do_widget(gpu00ctx, GPUS[0][1], GPUS[0][2], GPUS[0][3], GPUS[0][4], GPUS[0][5], GPUS[0][6]);
         do_widget(gpu10ctx, GPUS[1][1], GPUS[1][2], GPUS[1][3], GPUS[1][4], GPUS[1][5], GPUS[1][6]);
@@ -269,10 +275,26 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
         do_widget(gpu25ctx, GPUS[8][1], GPUS[8][2], GPUS[8][3], GPUS[8][4], GPUS[8][5], GPUS[8][6]);
 
 
-
         d1.style.display = "block";
         d2.style.display = "none";
         d3.style.display = "none";
+      }
+
+      function draw_logo(){
+        var clogo = document.getElementById("logo");
+        var logoctx = clogo.getContext("2d");
+        logoctx.font = "19px Arial";
+        logoctx.fillStyle="LightGrey";
+        logoctx.strokeStyle="LightGrey";
+        logoctx.fillText("McG",48,40);
+        logoctx.beginPath();
+        logoctx.moveTo(10,20);
+        logoctx.lineTo(10,48);
+        logoctx.lineTo(38,48);
+        logoctx.lineTo(38,20);
+        logoctx.lineTo(24,58);
+        logoctx.lineTo(10,20);
+        logoctx.stroke();
       }
 
       function do_widget(context, name, busid, temp, fan, poweruse, powermax){

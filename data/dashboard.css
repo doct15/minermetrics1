@@ -24,7 +24,7 @@
   border: 10px;
   border-color: cyan;
   background-color: #353337;
-  z-index: 9999;
+  /* z-index: 9999; */
 }
 .tab_style_active {
   width: 91px;
@@ -63,4 +63,10 @@
   border:1px;
   solid #d3d3d3;
   margin: 20px;"
+}
+.logo_canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  /* border:2px solid #000000; */
 }
