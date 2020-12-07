@@ -251,9 +251,13 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
       window.onload=init();
 
       function init(){
-        // if (document.cookie.indexOf('is_reloaded')==-1) {
-        // if (!(sessionStorage.getItem("is_reloaded"))) {
         if (document.refreshForm.visited.value == "") {
+          d1.style.display = "block";
+          d2.style.display = "none";
+          d3.style.display = "none";
+
+          document.refreshForm.visited.value = "1";
+        }
           draw_logo();
 
           t1.style.top = "110";
@@ -265,14 +269,6 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
           t3.style.top = "172";           
           t3.onclick = set_tab_t3_active;
 
-          d1.style.display = "block";
-          d2.style.display = "none";
-          d3.style.display = "none";
-
-          // document.cookie = 'is_reloaded=1';
-          // sessionStorage.setItem("is_reloaded", "true");
-          document.refreshForm.visited.value = "1";
-        }
           write_header();
 
           write_miner_header(d1h,0);
