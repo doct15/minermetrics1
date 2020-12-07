@@ -2,7 +2,7 @@
 #
 
 # Wait for miners to deliver files
-sleep 60
+#sleep 60
 
 #DIR_TO_FILES="/home/metrics/minermetrics1/worker_files"
 DIR_TO_FILES="/home/doc/Applications/minermetrics1/data"
@@ -43,8 +43,7 @@ cat  > $DIR_TO_FILES/$WEBFILENAME <<EOF
   <body bgcolor="#262428">
 
     <div id="header1_div" class="miner_header">
-      <canvas id="header1_canvas" height="80" width="1000">
-Your browser does not support the HTML5 canvas tag.</canvas>      
+      <p></p>
     </div> 
 
 
@@ -188,8 +187,8 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
       var d1 = document.getElementById("db1_div");
       var d2 = document.getElementById("db2_div");
       var d3 = document.getElementById("db3_div");
-      var ch = document.getElementById("header1_canvas");
-      var chctx = ch.getContext("2d");
+      //var ch = document.getElementById("header1_canvas");
+      //var chctx = ch.getContext("2d");
       var dc1 = document.getElementById("dash1_canvas");
       var dc1ctx = dc1.getContext("2d");
       var dc2 = document.getElementById("dash2_canvas");
@@ -316,18 +315,16 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
         htext.innerHTML=\`
           <table class="table_font" width="100%">
             <tr>
-              <td>\${MINERADDR}</td>
-              <td>Hash Rate: \${HASHRATE}</td>
-              <td style="padding-left:60px">ETH: \${ETH}</td>
+              <td colspan=2>\${MINERADDR}</td>
+              <td align=right>Hash Rate:</td><td>\${HASHRATE}</td>
+              <td align=right>ETH:</td><td>\${ETH}</td>
             </tr>
-          </table>
-          <table class=table_font width="100%" style="color: Grey;">
-            <tr>
-              <td align=right>Workers:</td><td>\${WORKERS}</td>
-              <td align=right>Valid Shares:</td><td>\${VALIDSHARES}</td>
-              <td align=right>Invalid Shares:</td><td>\${INVALIDSHARES}</td>
+            <tr style="color: Grey;">
+              <td align=right width="30%">Workers:</td><td width="20%">\${WORKERS}</td>
+              <td align=right width="15%">Valid Shares:</td><td width="10%">\${VALIDSHARES}</td>
+              <td align=right width="15%">Invalid Shares:</td><td width="10%">\${INVALIDSHARES}</td>
             </tr>
-            <tr>
+            <tr style="color: Grey;">
               <td align=right>Unpaid balance:</td><td>\${UNPAID}</td>
               <td align=right>ETH per min:</td><td>\${CPM}</td>
               <td align=right>1 ETH in USD:</td><td>$ \${ETHPRICE}</td>

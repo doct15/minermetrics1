@@ -7,8 +7,7 @@
   <body bgcolor="#262428">
 
     <div id="header1_div" class="miner_header">
-      <canvas id="header1_canvas" height="80" width="1000">
-Your browser does not support the HTML5 canvas tag.</canvas>      
+      <p></p>
     </div> 
 
 
@@ -64,14 +63,14 @@ Your browser does not support the HTML5 canvas tag.</canvas>
       // Below is data to be supplied from linux parsing script
       //
       var MINERADDR = "0xa4df0737ee0345271b41105e2e37a3eae471d772";
-      var HASHRATE = 239611111.1111111;
+      var HASHRATE = 214000000;
       var ETH = 954856815755150031;
       var WORKERS = 3;
-      var VALIDSHARES = 215;
+      var VALIDSHARES = 190;
       var INVALIDSHARES = 0;
-      var UNPAID = 51985474482568230;
-      var CPM = 8.492198969523792e-06;
-      var ETHPRICE = 599.15;
+      var UNPAID = 52245539699863780;
+      var CPM = 8.501244689099966e-06;
+      var ETHPRICE = 598.5;
       var MINERS = [ "gamer", "linux", "miner" ]
       var GPUS = [
         [ "gamer", "GeForce GTX 1080 Ti", " 00000000:01:00.0",  71,  91,  194,  250,  ], 
@@ -85,9 +84,9 @@ Your browser does not support the HTML5 canvas tag.</canvas>
         [ "miner", "GeForce GTX 1070", " 00000000:06:00.0",  77,  90,  137,  151,  ], 
   ];
       var MINERGPUS = [ 1, 2, 6 ];
-      var MINERHASHRATES =[ 36277777.777777776, 47777777.777777776, 155555555.55555555 ];
+      var MINERHASHRATES =[ 24055555.555555556, 40000000, 149944444.44444445 ];
       var MINERDATE = [ "Sun Dec  6 18:15:01 PST 2020", "Sun Dec  6 18:15:02 PST 2020", "Sun Dec  6 18:15:01 PST 2020" ];
-      var MINERVALIDSHARES = [ 32 , 43 , 140 ];
+      var MINERVALIDSHARES = [ 21 , 36 , 133 ];
       var MINERINVALIDSHARES = [ 0, 0, 0 ];
       //
       // End of supplied data
@@ -105,8 +104,8 @@ Your browser does not support the HTML5 canvas tag.</canvas>
       var d1 = document.getElementById("db1_div");
       var d2 = document.getElementById("db2_div");
       var d3 = document.getElementById("db3_div");
-      var ch = document.getElementById("header1_canvas");
-      var chctx = ch.getContext("2d");
+      //var ch = document.getElementById("header1_canvas");
+      //var chctx = ch.getContext("2d");
       var dc1 = document.getElementById("dash1_canvas");
       var dc1ctx = dc1.getContext("2d");
       var dc2 = document.getElementById("dash2_canvas");
@@ -233,18 +232,16 @@ Your browser does not support the HTML5 canvas tag.</canvas>
         htext.innerHTML=`
           <table class="table_font" width="100%">
             <tr>
-              <td>${MINERADDR}</td>
-              <td>Hash Rate: ${HASHRATE}</td>
-              <td style="padding-left:60px">ETH: ${ETH}</td>
+              <td colspan=2>${MINERADDR}</td>
+              <td align=right>Hash Rate:</td><td>${HASHRATE}</td>
+              <td align=right>ETH:</td><td>${ETH}</td>
             </tr>
-          </table>
-          <table class=table_font width="100%" style="color: Grey;">
-            <tr>
-              <td align=right>Workers:</td><td>${WORKERS}</td>
-              <td align=right>Valid Shares:</td><td>${VALIDSHARES}</td>
-              <td align=right>Invalid Shares:</td><td>${INVALIDSHARES}</td>
+            <tr style="color: Grey;">
+              <td align=right width="30%">Workers:</td><td width="20%">${WORKERS}</td>
+              <td align=right width="15%">Valid Shares:</td><td width="10%">${VALIDSHARES}</td>
+              <td align=right width="15%">Invalid Shares:</td><td width="10%">${INVALIDSHARES}</td>
             </tr>
-            <tr>
+            <tr style="color: Grey;">
               <td align=right>Unpaid balance:</td><td>${UNPAID}</td>
               <td align=right>ETH per min:</td><td>${CPM}</td>
               <td align=right>1 ETH in USD:</td><td>$ ${ETHPRICE}</td>
