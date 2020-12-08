@@ -1,3 +1,39 @@
+#!/bin/bash
+#
+
+# Wait for miners to deliver files
+#sleep 60
+
+#DIR_TO_FILES="/home/metrics/minermetrics1/worker_files"
+DIR_TO_FILES="/home/doc/Applications/minermetrics1/data"
+FILE_EXT=".metrics"
+WEBFILENAME="dashboard.html"
+CSSFILENAME="dashboard.css"
+MINERADDR="0xa4df0737ee0345271b41105e2e37a3eae471d772"
+MINERS=( "gamer" "linux" "miner" )
+APITOKEN=$(cat /etc/miner.apitoken)
+PASSWORD=$(cat /etc/miner.pwd)
+OWNEDETH=$(curl -s "https://api.etherscan.io/api?module=account&action=balance&address=$MINERADDR&tag=latest&apikey=$APITOKEN")
+
+#DASHBOARD=$(curl -s https://api.ethermine.org/miner/$MINERADDR/dashboard)
+STATS=$(curl -s https://api.ethermine.org/miner/$MINERADDR/currentStats)
+CURRENTHASHRATE=$(echo $STATS | jq .data.currentHashrate)
+VALIDSHARES=$(echo $STATS | jq .data.validShares)
+INVALIDSHARES=$(echo $STATS | jq .data.invalidShares)
+ACTIVEWORKERS=$(echo $STATS | jq .data.activeWorkers)
+UBALANCE=$(echo $STATS  | jq .data.unpaid)
+ETHPRICE=$(curl -s https://api.ethermine.org/poolStats | jq .data.price.usd)
+CPM=$(echo $STATS  | jq .data.coinsPerMin)
+#CPM=$(bc <<< "scale=8; ${CPM: 0:${#CPM}-4} / 10 ^ ${CPM: -1}")
+ETHOWNED=$(curl -s "https://api.etherscan.io/api?module=account&action=balance&address=$MINERADDR&tag=latest&apikey=$APITOKEN" | jq -r .result)
+GPUDATA=(NAME BUSID TEMP FAN GPUUTIL MEMUTIL MEMTOTAL MEMFREE MEMUSED POWDRAW POWLIMIT)
+FIELDSTOSHOW=( 0 1 2 3 4 5 8 6 )
+#MINERSTATS=$(curl -s https://api.ethermine.org/miner/$MINERADDR/worker/$WORKER/currentStats)
+
+#nvidia-smi --query-gpu=name,pci.bus_id,temperature.gpu,fan.speed,utilization.gpu,utilization.memory,memory.total,memory.free,memory.used,power.draw,power.limit --format=csv > linux.miner
+#Current Eth owned 954856815755150031. Where does the decimal go?
+
+cat  > $DIR_TO_FILES/$WEBFILENAME <<EOF
 
 <html><head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8";>
@@ -7,7 +43,7 @@
   <body bgcolor="#262428">
 
     <form name="refreshForm">
-      <input type="hidden" name="visited" value="0" />
+      <input type="hidden" name="visited" value="" />
     </form>
 
     <div id="header1_div" class="miner_header">
@@ -17,13 +53,13 @@
     <canvas id="logo" width="96" height="68" class="logo_canvas">
 Your browser does not support the HTML5 canvas tag.</canvas>
 
-    <div id="tab1" class="tab_style_inactive" onclick="set_tab_t1_active()" style="top:110;">
+    <div id="tab1" style="top: 110;">
       <span class="tab_font">gamer</span>
     </div>
-    <div id="tab2" class="tab_style_inactive" onclick="set_tab_t2_active()">
+    <div id="tab2" style="top: 141;">
       <span class="tab_font">linux</span>
     </div>
-    <div id="tab3" class="tab_style_inactive" onclick="set_tab_t3_active()">
+    <div id="tab3" style="top: 172;">
       <span class="tab_font">miner</span>
     </div>
 
@@ -71,31 +107,78 @@ Your browser does not support the HTML5 canvas tag.</canvas>
       // Below is data to be supplied from linux parsing script
       //
       var MINERADDR = "0xa4df0737ee0345271b41105e2e37a3eae471d772";
-      var HASHRATE = 236611111.1111111;
-      var ETH = 954856815755150031;
-      var WORKERS = 3;
-      var VALIDSHARES = 211;
-      var INVALIDSHARES = 0;
-      var UNPAID = 75286015942504510;
-      var CPM = 9.229637964643774e-06;
-      var ETHPRICE = 570.5;
+      var HASHRATE = $CURRENTHASHRATE;
+      var ETH = $ETHOWNED;
+      var WORKERS = $ACTIVEWORKERS;
+      var VALIDSHARES = $VALIDSHARES;
+      var INVALIDSHARES = $INVALIDSHARES;
+      var UNPAID = $UBALANCE;
+      var CPM = $CPM;
+      var ETHPRICE = $ETHPRICE;
       var MINERS = [ "gamer", "linux", "miner" ]
-      var GPUS = [
-        [ "gamer", "GeForce GTX 1080 Ti", " 00000000:01:00.0",  71,  91,  194,  250,  ], 
-        [ "linux", "GeForce GTX 1060 6GB", " 00000000:01:00.0",  72,  72,  114,  120,  ], 
-        [ "linux", "GeForce GTX 1060 6GB", " 00000000:07:00.0",  67,  57,  113,  120,  ], 
-        [ "miner", "GeForce GTX 1070", " 00000000:01:00.0",  72,  90,  140,  151,  ], 
-        [ "miner", "GeForce GTX 1070", " 00000000:02:00.0",  78,  90,  140,  151,  ], 
-        [ "miner", "GeForce GTX 1070", " 00000000:03:00.0",  78,  90,  141,  151,  ], 
-        [ "miner", "GeForce GTX 1070", " 00000000:04:00.0",  78,  90,  140,  151,  ], 
-        [ "miner", "GeForce GTX 1070", " 00000000:05:00.0",  77,  90,  140,  151,  ], 
-        [ "miner", "GeForce GTX 1070", " 00000000:06:00.0",  77,  90,  137,  151,  ], 
-  ];
-      var MINERGPUS = [ 1, 2, 6 ];
-      var MINERHASHRATES =[ 28500000, 28888888.888888888, 185166666.66666666 ];
-      var MINERDATE = [ "Sun Dec  6 18:15:01 PST 2020", "Sun Dec  6 18:15:02 PST 2020", "Sun Dec  6 18:15:01 PST 2020" ];
-      var MINERVALIDSHARES = [ 25 , 26 , 166 ];
-      var MINERINVALIDSHARES = [ 0, 0, 0 ];
+EOF
+
+RESPONSE=$(dos2unix -q $DIR_TO_FILES/gamer.metrics)
+GPUDATA=(NAME BUSID TEMP FAN GPUUTIL MEMUTIL MEMTOTAL MEMFREE MEMUSED POWDRAW POWLIMIT)
+FIELDSTOSHOW=( 0 1 2 3 9 10 )
+echo "      var GPUS = [" >> $DIR_TO_FILES/$WEBFILENAME
+for miner in ${MINERS[@]}
+do
+  MINERFILE="$DIR_TO_FILES/$miner.metrics"
+  linenum=1
+  gpu=0
+  while read line;
+  do
+	  #echo "$linenum $line"
+	  if [ "$linenum" -eq "1" ]
+	  then
+		  NUMGPU=${line:0:1}
+		  MINERNAME=${line:1:5}
+		  DATADATE=${line:6:28}
+		  MINERSTATS=$(curl -s https://api.ethermine.org/miner/$MINERADDR/worker/$MINERNAME/currentStats)
+		  MINERCURRENTHASHRATE=$(echo $MINERSTATS | jq .data.currentHashrate)
+		  MINERVALIDSHARES=$(echo $MINERSTATS | jq .data.validShares)
+		  MINERINVALIDSHARES=$(echo $MINERSTATS | jq .data.invalidShares)
+      AMINERGPUS+=("$NUMGPU")
+      AMINERHASHRATES+=("$MINERCURRENTHASHRATE")
+      AMINERDATE+=("$DATADATE")
+      AMINERVALIDSHARES+=("$MINERVALIDSHARES")
+      AMINERINVALIDSHARES+=("$MINERINVALIDSHARES")
+    elif [ "$linenum" -gt "2" ]
+    then
+		  #read vars
+		  IFS=',' read -r -a gpuvalues <<< "$line"
+      a=${gpuvalues[3]}
+      gpuvalues[3]=${a:0:3}
+      a=${gpuvalues[9]}
+      gpuvalues[9]=${a:0:4}
+      a=${gpuvalues[10]}
+      gpuvalues[10]=${a:0:4}
+      echo -n "        [ \"$miner\", " >> $DIR_TO_FILES/$WEBFILENAME
+	    for field in ${FIELDSTOSHOW[@]}
+	    do
+        if [ $field -lt 2 ]
+        then
+  		    echo -n "\"${gpuvalues[$field]}\", " >> $DIR_TO_FILES/$WEBFILENAME
+        else
+          echo -n "${gpuvalues[$field]}, " >> $DIR_TO_FILES/$WEBFILENAME
+        fi
+        #sleep 1
+  		done
+      echo " ], " >> $DIR_TO_FILES/$WEBFILENAME
+		  ((gpu=gpu++))
+	  fi
+	  ((linenum=linenum+1))
+  done < $MINERFILE
+done
+echo "  ];" >> $DIR_TO_FILES/$WEBFILENAME
+
+cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
+      var MINERGPUS = [ ${AMINERGPUS[0]}, ${AMINERGPUS[1]}, ${AMINERGPUS[2]} ];
+      var MINERHASHRATES =[ ${AMINERHASHRATES[0]}, ${AMINERHASHRATES[1]}, ${AMINERHASHRATES[2]} ];
+      var MINERDATE = [ "${AMINERDATE[0]}", "${AMINERDATE[1]}", "${AMINERDATE[2]}" ];
+      var MINERVALIDSHARES = [ ${AMINERVALIDSHARES[0]} , ${AMINERVALIDSHARES[1]} , ${AMINERVALIDSHARES[2]} ];
+      var MINERINVALIDSHARES = [ ${AMINERINVALIDSHARES[0]}, ${AMINERINVALIDSHARES[1]}, ${AMINERINVALIDSHARES[2]} ];
       //
       // End of supplied data
       //
@@ -168,20 +251,25 @@ Your browser does not support the HTML5 canvas tag.</canvas>
       window.onload=init();
 
       function init(){
-        var active_tab=document.refreshForm.visited.value;
-        if (active_tab == "0") {
-          console.log("zero")
-          //set_tab_t1_active();
-          active_tab="1";
+        if (document.refreshForm.visited.value == "") {
+          // d1.style.display = "block";
+          // d2.style.display = "none";
+          // d3.style.display = "none";
+
+          set_tab_t1_active();
+
+          document.refreshForm.visited.value = "1";
         }
           draw_logo();
 
           t1.style.top = "110";
-          //t1.onclick = function(){set_tab_t1_active()};
+          t1.onclick = set_tab_t1_active();
+
           t2.style.top = "141";
-          //t2.onclick = function(){set_tab_t2_active()};
+          t2.onclick = set_tab_t2_active();
+
           t3.style.top = "172";           
-          //t3.onclick = function(){set_tab_t3_active()};
+          t3.onclick = set_tab_t3_active();
 
           write_header();
 
@@ -199,18 +287,6 @@ Your browser does not support the HTML5 canvas tag.</canvas>
           do_widget(gpu24ctx, GPUS[7][1], GPUS[7][2], GPUS[7][3], GPUS[7][4], GPUS[7][5], GPUS[7][6]);
           do_widget(gpu25ctx, GPUS[8][1], GPUS[8][2], GPUS[8][3], GPUS[8][4], GPUS[8][5], GPUS[8][6]);
 
-          console.log( active_tab );
-          switch (active_tab){
-            case "1":
-              set_tab_t1_active();
-              break;
-            case "2":
-              set_tab_t2_active();
-              break;
-            case "3":
-              set_tab_t3_active();
-              break;
-          }
       }
 
       function draw_logo(){
@@ -242,77 +318,71 @@ Your browser does not support the HTML5 canvas tag.</canvas>
       }
 
       function set_tab_t1_active(){
-        console.log("Set Active Tab 1");
         t1.className = "tab_style_active";
         t2.className = "tab_style_inactive";
         t3.className = "tab_style_inactive";
         d1.style.display = "block";
         d2.style.display = "none";
         d3.style.display = "none";
-        document.refreshForm.visited.value = "1";
       }
 
       function set_tab_t2_active(){
-        console.log("Set Active Tab 2");
         t1.className = "tab_style_inactive";
         t2.className = "tab_style_active";
         t3.className = "tab_style_inactive";
         d1.style.display = "none";
         d2.style.display = "block";
         d3.style.display = "none";
-        document.refreshForm.visited.value = "2";
       }
 
       function set_tab_t3_active(){
-        console.log("Set Active Tab 3");
         t1.className = "tab_style_inactive";
         t2.className = "tab_style_inactive";
         t3.className = "tab_style_active";
         d1.style.display = "none";
         d2.style.display = "none";
         d3.style.display = "block";
-        document.refreshForm.visited.value = "3";
       }
 
       function write_header(){
         htext=document.getElementById("header1_div");
-        htext.innerHTML=`
+        htext.innerHTML=\`
           <table class="table_font" width="100%">
             <tr>
-              <td colspan=2>${MINERADDR}</td>
-              <td align=right>Hash Rate:</td><td>${HASHRATE}</td>
-              <td align=right>ETH:</td><td>${ETH}</td>
+              <td colspan=2>\${MINERADDR}</td>
+              <td align=right>Hash Rate:</td><td>\${HASHRATE}</td>
+              <td align=right>ETH:</td><td>\${ETH}</td>
             </tr>
             <tr style="color: Grey;">
-              <td align=right width="30%">Workers:</td><td width="20%">${WORKERS}</td>
-              <td align=right width="15%">Valid Shares:</td><td width="10%">${VALIDSHARES}</td>
-              <td align=right width="15%">Invalid Shares:</td><td width="10%">${INVALIDSHARES}</td>
+              <td align=right width="30%">Workers:</td><td width="20%">\${WORKERS}</td>
+              <td align=right width="15%">Valid Shares:</td><td width="10%">\${VALIDSHARES}</td>
+              <td align=right width="15%">Invalid Shares:</td><td width="10%">\${INVALIDSHARES}</td>
             </tr>
             <tr style="color: Grey;">
-              <td align=right>Unpaid balance:</td><td>${UNPAID}</td>
-              <td align=right>ETH per min:</td><td>${CPM}</td>
-              <td align=right>1 ETH in USD:</td><td>$ ${ETHPRICE}</td>
+              <td align=right>Unpaid balance:</td><td>\${UNPAID}</td>
+              <td align=right>ETH per min:</td><td>\${CPM}</td>
+              <td align=right>1 ETH in USD:</td><td>$ \${ETHPRICE}</td>
             </tr>
           </table>
-        `;
+        \`;
       }
 
       function write_miner_header(div, miner){
         var MINERHASHRATE=(MINERHASHRATES[miner]/1000000).toFixed(2)
-        div.innerHTML=`
+        div.innerHTML=\`
           <table class="table_font" width="100%">
             <tr>
-              <td colspan=2 width="30%">Miner: ${MINERS[miner]}</td>
-              <td align=right width="15%">Hash Rate:</td><td width="10%">${MINERHASHRATE}</td>
-              <td align=right colspan=2 style="font-size: 10pt;" width="25%">Date: ${MINERDATE[miner]}</td>
+              <td colspan=2 width="30%">Miner: \${MINERS[miner]}</td>
+              <td align=right width="15%">Hash Rate:</td><td width="10%">\${MINERHASHRATE}</td>
+              <td align=right colspan=2 style="font-size: 10pt;" width="25%">Date: \${MINERDATE[miner]}</td>
             </tr>
             <tr style="color: Grey;">
               <td colspan=2></td>
-              <td align=right>Valid Shares:</td><td width="10%">${MINERVALIDSHARES[miner]}</td>
-              <td align=right>Invalid Shares:</td><td width="10%">${MINERINVALIDSHARES[miner]}</td>
+              <td align=right>Valid Shares:</td><td width="10%">\${MINERVALIDSHARES[miner]}</td>
+              <td align=right>Invalid Shares:</td><td width="10%">\${MINERINVALIDSHARES[miner]}</td>
             </tr>
           </table>
-        `;        
+        \`;        
 
         //context.font = "16px Arial";
         //context.fillStyle="LightGrey";
@@ -470,3 +540,15 @@ Your browser does not support the HTML5 canvas tag.</canvas>
     </script>
   </body>
 </html>
+EOF
+
+echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$CSSFILENAME)"
+echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME)"
+
+
+
+
+
+
+
+

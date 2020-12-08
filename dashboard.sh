@@ -43,7 +43,7 @@ cat  > $DIR_TO_FILES/$WEBFILENAME <<EOF
   <body bgcolor="#262428">
 
     <form name="refreshForm">
-      <input type="hidden" name="visited" value="" />
+      <input type="hidden" name="visited" value="0" />
     </form>
 
     <div id="header1_div" class="miner_header">
@@ -53,13 +53,13 @@ cat  > $DIR_TO_FILES/$WEBFILENAME <<EOF
     <canvas id="logo" width="96" height="68" class="logo_canvas">
 Your browser does not support the HTML5 canvas tag.</canvas>
 
-    <div id="tab1" class="tab_style_active">
+    <div id="tab1" class="tab_style_inactive" onclick="set_tab_t1_active()" style="top:110;">
       <span class="tab_font">gamer</span>
     </div>
-    <div id="tab2" class="tab_style_inactive">
+    <div id="tab2" class="tab_style_inactive" onclick="set_tab_t2_active()">
       <span class="tab_font">linux</span>
     </div>
-    <div id="tab3" class="tab_style_inactive">
+    <div id="tab3" class="tab_style_inactive" onclick="set_tab_t3_active()">
       <span class="tab_font">miner</span>
     </div>
 
@@ -251,23 +251,20 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
       window.onload=init();
 
       function init(){
-        if (document.refreshForm.visited.value == "") {
-          d1.style.display = "block";
-          d2.style.display = "none";
-          d3.style.display = "none";
-
-          document.refreshForm.visited.value = "1";
+        var active_tab=document.refreshForm.visited.value;
+        if (active_tab == "0") {
+          console.log("zero")
+          //set_tab_t1_active();
+          active_tab="1";
         }
           draw_logo();
 
           t1.style.top = "110";
-          t1.onclick = set_tab_t1_active;
-
+          //t1.onclick = function(){set_tab_t1_active()};
           t2.style.top = "141";
-          t2.onclick = set_tab_t2_active;
-
+          //t2.onclick = function(){set_tab_t2_active()};
           t3.style.top = "172";           
-          t3.onclick = set_tab_t3_active;
+          //t3.onclick = function(){set_tab_t3_active()};
 
           write_header();
 
@@ -285,6 +282,18 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
           do_widget(gpu24ctx, GPUS[7][1], GPUS[7][2], GPUS[7][3], GPUS[7][4], GPUS[7][5], GPUS[7][6]);
           do_widget(gpu25ctx, GPUS[8][1], GPUS[8][2], GPUS[8][3], GPUS[8][4], GPUS[8][5], GPUS[8][6]);
 
+          console.log( active_tab );
+          switch (active_tab){
+            case "1":
+              set_tab_t1_active();
+              break;
+            case "2":
+              set_tab_t2_active();
+              break;
+            case "3":
+              set_tab_t3_active();
+              break;
+          }
       }
 
       function draw_logo(){
@@ -316,30 +325,36 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
       }
 
       function set_tab_t1_active(){
+        console.log("Set Active Tab 1");
         t1.className = "tab_style_active";
         t2.className = "tab_style_inactive";
         t3.className = "tab_style_inactive";
         d1.style.display = "block";
         d2.style.display = "none";
         d3.style.display = "none";
+        document.refreshForm.visited.value = "1";
       }
 
       function set_tab_t2_active(){
+        console.log("Set Active Tab 2");
         t1.className = "tab_style_inactive";
         t2.className = "tab_style_active";
         t3.className = "tab_style_inactive";
         d1.style.display = "none";
         d2.style.display = "block";
         d3.style.display = "none";
+        document.refreshForm.visited.value = "2";
       }
 
       function set_tab_t3_active(){
+        console.log("Set Active Tab 3");
         t1.className = "tab_style_inactive";
         t2.className = "tab_style_inactive";
         t3.className = "tab_style_active";
         d1.style.display = "none";
         d2.style.display = "none";
         d3.style.display = "block";
+        document.refreshForm.visited.value = "3";
       }
 
       function write_header(){
