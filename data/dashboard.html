@@ -71,14 +71,14 @@ Your browser does not support the HTML5 canvas tag.</canvas>
       // Below is data to be supplied from linux parsing script
       //
       var MINERADDR = "0xa4df0737ee0345271b41105e2e37a3eae471d772";
-      var HASHRATE = 236611111.1111111;
-      var ETH = 954856815755150031;
+      var HASHRATE = 235166666.6666667;
+      var ETH = 1052089328678632349;
       var WORKERS = 3;
       var VALIDSHARES = 211;
       var INVALIDSHARES = 0;
-      var UNPAID = 75286015942504510;
-      var CPM = 9.229637964643774e-06;
-      var ETHPRICE = 570.5;
+      var UNPAID = 7025768834100394;
+      var CPM = 9.415393826391038e-06;
+      var ETHPRICE = 561.3;
       var MINERS = [ "gamer", "linux", "miner" ]
       var GPUS = [
         [ "gamer", "GeForce GTX 1080 Ti", " 00000000:01:00.0",  71,  91,  194,  250,  ], 
@@ -92,15 +92,16 @@ Your browser does not support the HTML5 canvas tag.</canvas>
         [ "miner", "GeForce GTX 1070", " 00000000:06:00.0",  77,  90,  137,  151,  ], 
   ];
       var MINERGPUS = [ 1, 2, 6 ];
-      var MINERHASHRATES =[ 28500000, 28888888.888888888, 185166666.66666666 ];
+      var MINERHASHRATES =[ 34444444.44444445, 38888888.88888889, 161833333.33333334 ];
       var MINERDATE = [ "Sun Dec  6 18:15:01 PST 2020", "Sun Dec  6 18:15:02 PST 2020", "Sun Dec  6 18:15:01 PST 2020" ];
-      var MINERVALIDSHARES = [ 25 , 26 , 166 ];
+      var MINERVALIDSHARES = [ 31 , 35 , 145 ];
       var MINERINVALIDSHARES = [ 0, 0, 0 ];
       //
       // End of supplied data
       //
 
       // Normalize some data
+      ETH = (ETH/1000000000000000000).toFixed(8);
       UNPAID = (UNPAID/1000000000000000000).toFixed(6);
       CPM = CPM.toFixed(8);;
       HASHRATE = (HASHRATE/1000000).toFixed(2);

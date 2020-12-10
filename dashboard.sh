@@ -184,6 +184,7 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
       //
 
       // Normalize some data
+      ETH = (ETH/1000000000000000000).toFixed(8);
       UNPAID = (UNPAID/1000000000000000000).toFixed(6);
       CPM = CPM.toFixed(8);;
       HASHRATE = (HASHRATE/1000000).toFixed(2);
@@ -253,7 +254,7 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
       function init(){
         var active_tab=document.refreshForm.visited.value;
         if (active_tab == "0") {
-          console.log("zero")
+          //console.log("zero")
           //set_tab_t1_active();
           active_tab="1";
         }
@@ -282,7 +283,7 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
           do_widget(gpu24ctx, GPUS[7][1], GPUS[7][2], GPUS[7][3], GPUS[7][4], GPUS[7][5], GPUS[7][6]);
           do_widget(gpu25ctx, GPUS[8][1], GPUS[8][2], GPUS[8][3], GPUS[8][4], GPUS[8][5], GPUS[8][6]);
 
-          console.log( active_tab );
+          //console.log( active_tab );
           switch (active_tab){
             case "1":
               set_tab_t1_active();
@@ -325,7 +326,7 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
       }
 
       function set_tab_t1_active(){
-        console.log("Set Active Tab 1");
+        //console.log("Set Active Tab 1");
         t1.className = "tab_style_active";
         t2.className = "tab_style_inactive";
         t3.className = "tab_style_inactive";
@@ -336,7 +337,7 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
       }
 
       function set_tab_t2_active(){
-        console.log("Set Active Tab 2");
+        //console.log("Set Active Tab 2");
         t1.className = "tab_style_inactive";
         t2.className = "tab_style_active";
         t3.className = "tab_style_inactive";
@@ -347,7 +348,7 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
       }
 
       function set_tab_t3_active(){
-        console.log("Set Active Tab 3");
+        //console.log("Set Active Tab 3");
         t1.className = "tab_style_inactive";
         t2.className = "tab_style_inactive";
         t3.className = "tab_style_active";
