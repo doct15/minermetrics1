@@ -46,7 +46,7 @@ cat  > $DIR_TO_FILES/$WEBFILENAME <<EOF
       <tr>
         <th colspan=1>$MINERADDR</th>
         <th colspan=1>Hash Rate: $CURRENTHASHRATE Mh/s</th>
-        <th colspan=1>ETH: .$ETHOWNED</th>        
+        <th colspan=1>ETH: $ETHOWNED</th>        
       </tr>
     </table>
     <table class=blueTable>
