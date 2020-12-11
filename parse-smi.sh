@@ -10,7 +10,7 @@ FILE_EXT=".metrics"
 WEBFILENAME="webfile.html"
 CSSFILENAME="metrics.css"
 MINERADDR="0xa4df0737ee0345271b41105e2e37a3eae471d772"
-MINERS=( "linux" "miner" "gamer" )
+MINERS=( "gamer" "linux" "miner" )
 APITOKEN=$(cat /etc/miner.apitoken)
 PASSWORD=$(cat /etc/miner.pwd)
 OWNEDETH=$(curl -s "https://api.etherscan.io/api?module=account&action=balance&address=$MINERADDR&tag=latest&apikey=$APITOKEN")
