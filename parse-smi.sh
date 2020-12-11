@@ -2,7 +2,7 @@
 #
 
 # Wait for miners to deliver files
-#sleep 50
+sleep 50
 
 #DIR_TO_FILES="/home/metrics/minermetrics1/worker_files"
 DIR_TO_FILES="/home/doc/Applications/minermetrics1/data"
