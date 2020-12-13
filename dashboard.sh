@@ -37,7 +37,7 @@ cat  > $DIR_TO_FILES/$WEBFILENAME <<EOF
 
 <html><head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8";>
-<meta http-equiv="refresh" content="300">
+<meta http-equiv="refresh" content="60">
     <link rel="stylesheet" href="dashboard.css">
   </head>
   <body bgcolor="#262428">

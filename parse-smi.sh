@@ -38,7 +38,7 @@ FIELDSTOSHOW=( 0 1 2 3 4 5 8 6 )
 cat  > $DIR_TO_FILES/$WEBFILENAME <<EOF
 <html>
   <head>
-    <meta http-equiv="refresh" content="300">
+    <meta http-equiv="refresh" content="60">
     <link rel="stylesheet" href="$CSSFILENAME" />
   </head>
   <body bgcolor=#000000>
