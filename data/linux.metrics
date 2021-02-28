@@ -1,4 +1,4 @@
-2linuxWed Jan 13 15:00:01 PST 2021
+2linuxSat Feb 27 21:50:01 PST 2021
 name, pci.bus_id, temperature.gpu, fan.speed [%], utilization.gpu [%], utilization.memory [%], memory.total [MiB], memory.free [MiB], memory.used [MiB], power.draw [W], power.limit [W]
-GeForce GTX 1060 6GB, 00000000:01:00.0, 73, 75 %, 100 %, 93 %, 6076 MiB, 1815 MiB, 4261 MiB, 117.34 W, 120.00 W
-GeForce GTX 1060 6GB, 00000000:07:00.0, 68, 57 %, 100 %, 93 %, 6078 MiB, 1849 MiB, 4229 MiB, 117.86 W, 120.00 W
+GeForce GTX 1060 6GB, 00000000:01:00.0, 36, 0 %, 0 %, 0 %, 6075 MiB, 6023 MiB, 52 MiB, 4.72 W, 120.00 W
+GeForce GTX 1060 6GB, 00000000:07:00.0, 39, 0 %, 0 %, 0 %, 6078 MiB, 6060 MiB, 18 MiB, 4.53 W, 120.00 W
