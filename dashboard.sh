@@ -2,7 +2,7 @@
 #
 
 # Wait for miners to deliver files
-sleep 20
+sleep 22
 
 #DIR_TO_FILES="/home/metrics/minermetrics1/worker_files"
 DIR_TO_FILES="/home/doc/Applications/minermetrics1/data"
@@ -11,7 +11,9 @@ WEBFILENAME="dashboard.html"
 CSSFILENAME="dashboard.css"
 MINERADDR="0xa4df0737ee0345271b41105e2e37a3eae471d772"
 MINERS=( "gamer" "linux" "miner" )
-APITOKEN=$(cat /etc/miner.apitoken)
+PHONENUM=$(cat /etc/phone.number)
+PHONEPWD=$(cat /etc/pom.pwd)
+PAGERFILE="pager.timer2"
 PASSWORD=$(cat /etc/miner.pwd)
 OWNEDETH=$(curl -s "https://api.etherscan.io/api?module=account&action=balance&address=$MINERADDR&tag=latest&apikey=$APITOKEN")
 
@@ -29,6 +31,34 @@ ETHOWNED=$(curl -s "https://api.etherscan.io/api?module=account&action=balance&a
 GPUDATA=(NAME BUSID TEMP FAN GPUUTIL MEMUTIL MEMTOTAL MEMFREE MEMUSED POWDRAW POWLIMIT)
 FIELDSTOSHOW=( 0 1 2 3 4 5 8 6 )
 #MINERSTATS=$(curl -s https://api.ethermine.org/miner/$MINERADDR/worker/$WORKER/currentStats)
+
+function page_msg () {
+  # Paging Brian PHONENUM
+  if [[ -z $1 ]]; then
+    MSG="No Message"
+  else
+    MSG=$1
+  fi
+  if ! [ -e $DIR_TO_FILES/$PAGERFILE ]; then
+    #echo "File doesn't exist" >> "$LOGFILE"
+    touch $DIR_TO_FILES/$PAGERFILE
+  else
+    #echo "File exists" >> "$LOGFILE"
+    #LS=$(ls -la $DIR_TO_FILES/$PAGERFILE)
+    #echo "ls $LS" >> "$LOGFILE"
+    FILETIME=$(date -d"$(stat -c '%y' $DIR_TO_FILES/$PAGERFILE)" +%s)
+    #echo "filetime $FILETIME" >> "$LOGFILE"
+    TIMEDIFF=$(($(date +%s)-FILETIME))
+    #echo "date $(date +%s)" >> "$LOGFILE"
+    if ((TIMEDIFF<600)); then
+      return
+    else
+      touch $DIR_TO_FILES/$PAGERFILE
+    fi
+  fi
+  sendemail -f doc@tavian.com -t $PHONENUM@tmomail.net -u "Miner Alert" -m "$MSG" -s smtp.tavian.com:587 -xu distelli@tavian.com -xp $PHONEPWD -v
+  rm $DIR_TO_FILES/$PAGERFILE
+}
 
 #nvidia-smi --query-gpu=name,pci.bus_id,temperature.gpu,fan.speed,utilization.gpu,utilization.memory,memory.total,memory.free,memory.used,power.draw,power.limit --format=csv > linux.miner
 #Current Eth owned 954856815755150031. Where does the decimal go?
@@ -556,8 +586,17 @@ cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
 </html>
 EOF
 
-echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$CSSFILENAME)"
-echo "$(ncftpput -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME)"
+echo "$(ncftpput -t 20 -r 1 -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$CSSFILENAME)"
+
+if [ "$?" ]
+then
+  echo "ftp server timeout."
+  #Placeholder for text code
+  page_msg "ftp server timeout"
+  exit
+fi
+
+echo "$(ncftpput -t 20 -r 1 -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME)"
 
 
 
