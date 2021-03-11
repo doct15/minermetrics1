@@ -15,6 +15,7 @@ PHONENUM=$(cat /etc/phone.number)
 PHONEPWD=$(cat /etc/pom.pwd)
 PAGERFILE="pager.timer2"
 PASSWORD=$(cat /etc/miner.pwd)
+APITOKEN=$(cat /etc/miner.apitoken)
 OWNEDETH=$(curl -s "https://api.etherscan.io/api?module=account&action=balance&address=$MINERADDR&tag=latest&apikey=$APITOKEN")
 
 #DASHBOARD=$(curl -s https://api.ethermine.org/miner/$MINERADDR/dashboard)
@@ -86,10 +87,10 @@ Your browser does not support the HTML5 canvas tag.</canvas>
     <div id="tab1" class="tab_style_inactive" onclick="set_tab_t1_active()" style="top:110;">
       <span class="tab_font">gamer</span>
     </div>
-    <div id="tab2" class="tab_style_inactive" onclick="set_tab_t2_active()">
+    <div id="tab2" class="tab_style_inactive" onclick="set_tab_t2_active()" style="top:141;">
       <span class="tab_font">linux</span>
     </div>
-    <div id="tab3" class="tab_style_inactive" onclick="set_tab_t3_active()">
+    <div id="tab3" class="tab_style_inactive" onclick="set_tab_t3_active()" style="top:172;">
       <span class="tab_font">miner</span>
     </div>
 
