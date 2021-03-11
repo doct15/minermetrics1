@@ -179,7 +179,7 @@ echo "</body></html>" >> $DIR_TO_FILES/$WEBFILENAME
 
 echo "$(ncftpput -t 20 -r 1 -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$CSSFILENAME)"
 
-if [ "$?" ]
+if [ "$?" == 1 ]
 then
   echo "ftp server timeout."
   #Placeholder for text code

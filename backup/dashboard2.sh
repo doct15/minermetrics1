@@ -1,3 +1,71 @@
+#!/bin/bash
+#
+
+# Wait for miners to deliver files
+#sleep 22
+
+set -x
+
+#DIR_TO_FILES="/home/metrics/minermetrics1/worker_files"
+DIR_TO_FILES="/home/doc/Applications/minermetrics1/data"
+FILE_EXT=".metrics"
+WEBFILENAME="dashboard.html"
+CSSFILENAME="dashboard.css"
+MINERADDR="0xa4df0737ee0345271b41105e2e37a3eae471d772"
+MINERS=( "gamer" "linux" "miner" )
+PHONENUM=$(cat /etc/phone.number)
+PHONEPWD=$(cat /etc/pom.pwd)
+PAGERFILE="pager.timer2"
+PASSWORD=$(cat /etc/miner.pwd)
+OWNEDETH=$(curl -s "https://api.etherscan.io/api?module=account&action=balance&address=$MINERADDR&tag=latest&apikey=$APITOKEN")
+
+#DASHBOARD=$(curl -s https://api.ethermine.org/miner/$MINERADDR/dashboard)
+STATS=$(curl -s https://api.ethermine.org/miner/$MINERADDR/currentStats)
+CURRENTHASHRATE=$(echo $STATS | jq .data.currentHashrate)
+VALIDSHARES=$(echo $STATS | jq .data.validShares)
+INVALIDSHARES=$(echo $STATS | jq .data.invalidShares)
+ACTIVEWORKERS=$(echo $STATS | jq .data.activeWorkers)
+UBALANCE=$(echo $STATS  | jq .data.unpaid)
+ETHPRICE=$(curl -s https://api.ethermine.org/poolStats | jq .data.price.usd)
+CPM=$(echo $STATS  | jq .data.coinsPerMin)
+#CPM=$(bc <<< "scale=8; ${CPM: 0:${#CPM}-4} / 10 ^ ${CPM: -1}")
+ETHOWNED=$(curl -s "https://api.etherscan.io/api?module=account&action=balance&address=$MINERADDR&tag=latest&apikey=$APITOKEN" | jq -r .result)
+GPUDATA=(NAME BUSID TEMP FAN GPUUTIL MEMUTIL MEMTOTAL MEMFREE MEMUSED POWDRAW POWLIMIT)
+FIELDSTOSHOW=( 0 1 2 3 4 5 8 6 )
+#MINERSTATS=$(curl -s https://api.ethermine.org/miner/$MINERADDR/worker/$WORKER/currentStats)
+
+function page_msg () {
+  # Paging Brian PHONENUM
+  if [[ -z $1 ]]; then
+    MSG="No Message"
+  else
+    MSG=$1
+  fi
+  if ! [ -e $DIR_TO_FILES/$PAGERFILE ]; then
+    #echo "File doesn't exist" >> "$LOGFILE"
+    touch $DIR_TO_FILES/$PAGERFILE
+  else
+    #echo "File exists" >> "$LOGFILE"
+    #LS=$(ls -la $DIR_TO_FILES/$PAGERFILE)
+    #echo "ls $LS" >> "$LOGFILE"
+    FILETIME=$(date -d"$(stat -c '%y' $DIR_TO_FILES/$PAGERFILE)" +%s)
+    #echo "filetime $FILETIME" >> "$LOGFILE"
+    TIMEDIFF=$(($(date +%s)-FILETIME))
+    #echo "date $(date +%s)" >> "$LOGFILE"
+    if ((TIMEDIFF<600)); then
+      return
+    else
+      touch $DIR_TO_FILES/$PAGERFILE
+    fi
+  fi
+  sendemail -f doc@tavian.com -t $PHONENUM@tmomail.net -u "Miner Alert" -m "$MSG" -s smtp.tavian.com:587 -xu distelli@tavian.com -xp $PHONEPWD -v
+  rm $DIR_TO_FILES/$PAGERFILE
+}
+
+#nvidia-smi --query-gpu=name,pci.bus_id,temperature.gpu,fan.speed,utilization.gpu,utilization.memory,memory.total,memory.free,memory.used,power.draw,power.limit --format=csv > linux.miner
+#Current Eth owned 954856815755150031. Where does the decimal go?
+
+cat  > $DIR_TO_FILES/$WEBFILENAME <<EOF
 
 <html><head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8";>
@@ -71,31 +139,78 @@ Your browser does not support the HTML5 canvas tag.</canvas>
       // Below is data to be supplied from linux parsing script
       //
       var MINERADDR = "0xa4df0737ee0345271b41105e2e37a3eae471d772";
-      var HASHRATE = 258888888.8888889;
-      var ETH = Max rate limit reached, please use API Key for higher rate limit;
-      var WORKERS = 3;
-      var VALIDSHARES = 233;
-      var INVALIDSHARES = 0;
-      var UNPAID = 45172165280073140;
-      var CPM = 8.376492782972603e-06;
-      var ETHPRICE = 1842.54;
+      var HASHRATE = $CURRENTHASHRATE;
+      var ETH = $ETHOWNED;
+      var WORKERS = $ACTIVEWORKERS;
+      var VALIDSHARES = $VALIDSHARES;
+      var INVALIDSHARES = $INVALIDSHARES;
+      var UNPAID = $UBALANCE;
+      var CPM = $CPM;
+      var ETHPRICE = $ETHPRICE;
       var MINERS = [ "gamer", "linux", "miner" ]
-      var GPUS = [
-        [ "gamer", "GeForce GTX 1080 Ti", " 00000000:01:00.0",  82,  49,  148,  237,  ], 
-        [ "linux", "GeForce GTX 1060 6GB", " 00000000:01:00.0",  66,  53,  117,  120,  ], 
-        [ "linux", "GeForce GTX 1060 6GB", " 00000000:07:00.0",  67,  54,  119,  120,  ], 
-        [ "miner", "GeForce GTX 1070", " 00000000:01:00.0",  67,  80,  134,  151,  ], 
-        [ "miner", "GeForce GTX 1070", " 00000000:02:00.0",  72,  80,  137,  151,  ], 
-        [ "miner", "GeForce GTX 1070", " 00000000:03:00.0",  68,  80,  139,  151,  ], 
-        [ "miner", "GeForce GTX 1070", " 00000000:04:00.0",  67,  80,  136,  151,  ], 
-        [ "miner", "GeForce GTX 1070", " 00000000:05:00.0",  72,  80,  137,  151,  ], 
-        [ "miner", "GeForce GTX 1070", " 00000000:06:00.0",  72,  80,  132,  151,  ], 
-  ];
-      var MINERGPUS = [ 1, 2, 6 ];
-      var MINERHASHRATES =[ 43333333.333333336, 44444444.44444445, 171111111.1111111 ];
-      var MINERDATE = [ "Thu Mar 11 15:30:01 PST 2021", "Thu Mar 11 15:30:01 PST 2021", "Thu Mar 11 15:30:01 PST 2021" ];
-      var MINERVALIDSHARES = [ 39 , 40 , 154 ];
-      var MINERINVALIDSHARES = [ 0, 0, 0 ];
+EOF
+
+RESPONSE=$(dos2unix -q $DIR_TO_FILES/gamer.metrics)
+GPUDATA=(NAME BUSID TEMP FAN GPUUTIL MEMUTIL MEMTOTAL MEMFREE MEMUSED POWDRAW POWLIMIT)
+FIELDSTOSHOW=( 0 1 2 3 9 10 )
+echo "      var GPUS = [" >> $DIR_TO_FILES/$WEBFILENAME
+for miner in ${MINERS[@]}
+do
+  MINERFILE="$DIR_TO_FILES/$miner.metrics"
+  linenum=1
+  gpu=0
+  while read line;
+  do
+	  #echo "$linenum $line"
+	  if [ "$linenum" -eq "1" ]
+	  then
+		  NUMGPU=${line:0:1}
+		  MINERNAME=${line:1:5}
+		  DATADATE=${line:6:28}
+		  MINERSTATS=$(curl -s https://api.ethermine.org/miner/$MINERADDR/worker/$MINERNAME/currentStats)
+		  MINERCURRENTHASHRATE=$(echo $MINERSTATS | jq .data.currentHashrate)
+		  MINERVALIDSHARES=$(echo $MINERSTATS | jq .data.validShares)
+		  MINERINVALIDSHARES=$(echo $MINERSTATS | jq .data.invalidShares)
+      AMINERGPUS+=("$NUMGPU")
+      AMINERHASHRATES+=("$MINERCURRENTHASHRATE")
+      AMINERDATE+=("$DATADATE")
+      AMINERVALIDSHARES+=("$MINERVALIDSHARES")
+      AMINERINVALIDSHARES+=("$MINERINVALIDSHARES")
+    elif [ "$linenum" -gt "2" ]
+    then
+		  #read vars
+		  IFS=',' read -r -a gpuvalues <<< "$line"
+      a=${gpuvalues[3]}
+      gpuvalues[3]=${a:0:3}
+      a=${gpuvalues[9]}
+      gpuvalues[9]=${a:0:4}
+      a=${gpuvalues[10]}
+      gpuvalues[10]=${a:0:4}
+      echo -n "        [ \"$miner\", " >> $DIR_TO_FILES/$WEBFILENAME
+	    for field in ${FIELDSTOSHOW[@]}
+	    do
+        if [ $field -lt 2 ]
+        then
+  		    echo -n "\"${gpuvalues[$field]}\", " >> $DIR_TO_FILES/$WEBFILENAME
+        else
+          echo -n "${gpuvalues[$field]}, " >> $DIR_TO_FILES/$WEBFILENAME
+        fi
+        #sleep 1
+  		done
+      echo " ], " >> $DIR_TO_FILES/$WEBFILENAME
+		  ((gpu=gpu++))
+	  fi
+	  ((linenum=linenum+1))
+  done < $MINERFILE
+done
+echo "  ];" >> $DIR_TO_FILES/$WEBFILENAME
+
+cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
+      var MINERGPUS = [ ${AMINERGPUS[0]}, ${AMINERGPUS[1]}, ${AMINERGPUS[2]} ];
+      var MINERHASHRATES =[ ${AMINERHASHRATES[0]}, ${AMINERHASHRATES[1]}, ${AMINERHASHRATES[2]} ];
+      var MINERDATE = [ "${AMINERDATE[0]}", "${AMINERDATE[1]}", "${AMINERDATE[2]}" ];
+      var MINERVALIDSHARES = [ ${AMINERVALIDSHARES[0]} , ${AMINERVALIDSHARES[1]} , ${AMINERVALIDSHARES[2]} ];
+      var MINERINVALIDSHARES = [ ${AMINERINVALIDSHARES[0]}, ${AMINERINVALIDSHARES[1]}, ${AMINERINVALIDSHARES[2]} ];
       //
       // End of supplied data
       //
@@ -277,43 +392,43 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 
       function write_header(){
         htext=document.getElementById("header1_div");
-        htext.innerHTML=`
+        htext.innerHTML=\`
           <table class="table_font" width="100%">
             <tr>
-              <td colspan=2>${MINERADDR}</td>
-              <td align=right>Hash Rate:</td><td>${HASHRATE}</td>
-              <td align=right>ETH:</td><td>${ETH}</td>
+              <td colspan=2>\${MINERADDR}</td>
+              <td align=right>Hash Rate:</td><td>\${HASHRATE}</td>
+              <td align=right>ETH:</td><td>\${ETH}</td>
             </tr>
             <tr style="color: Grey;">
-              <td align=right width="30%">Workers:</td><td width="20%">${WORKERS}</td>
-              <td align=right width="15%">Valid Shares:</td><td width="10%">${VALIDSHARES}</td>
-              <td align=right width="15%">Invalid Shares:</td><td width="10%">${INVALIDSHARES}</td>
+              <td align=right width="30%">Workers:</td><td width="20%">\${WORKERS}</td>
+              <td align=right width="15%">Valid Shares:</td><td width="10%">\${VALIDSHARES}</td>
+              <td align=right width="15%">Invalid Shares:</td><td width="10%">\${INVALIDSHARES}</td>
             </tr>
             <tr style="color: Grey;">
-              <td align=right>Unpaid balance:</td><td>${UNPAID}</td>
-              <td align=right>ETH per min:</td><td>${CPM}</td>
-              <td align=right>1 ETH in USD:</td><td>$ ${ETHPRICE}</td>
+              <td align=right>Unpaid balance:</td><td>\${UNPAID}</td>
+              <td align=right>ETH per min:</td><td>\${CPM}</td>
+              <td align=right>1 ETH in USD:</td><td>$ \${ETHPRICE}</td>
             </tr>
           </table>
-        `;
+        \`;
       }
 
       function write_miner_header(div, miner){
         var MINERHASHRATE=(MINERHASHRATES[miner]/1000000).toFixed(2)
-        div.innerHTML=`
+        div.innerHTML=\`
           <table class="table_font" width="100%">
             <tr>
-              <td colspan=2 width="30%">Miner: ${MINERS[miner]}</td>
-              <td align=right width="15%">Hash Rate:</td><td width="10%">${MINERHASHRATE}</td>
-              <td align=right colspan=2 style="font-size: 10pt;" width="25%">Date: ${MINERDATE[miner]}</td>
+              <td colspan=2 width="30%">Miner: \${MINERS[miner]}</td>
+              <td align=right width="15%">Hash Rate:</td><td width="10%">\${MINERHASHRATE}</td>
+              <td align=right colspan=2 style="font-size: 10pt;" width="25%">Date: \${MINERDATE[miner]}</td>
             </tr>
             <tr style="color: Grey;">
               <td colspan=2></td>
-              <td align=right>Valid Shares:</td><td width="10%">${MINERVALIDSHARES[miner]}</td>
-              <td align=right>Invalid Shares:</td><td width="10%">${MINERINVALIDSHARES[miner]}</td>
+              <td align=right>Valid Shares:</td><td width="10%">\${MINERVALIDSHARES[miner]}</td>
+              <td align=right>Invalid Shares:</td><td width="10%">\${MINERINVALIDSHARES[miner]}</td>
             </tr>
           </table>
-        `;        
+        \`;        
 
         //context.font = "16px Arial";
         //context.fillStyle="LightGrey";
@@ -471,3 +586,18 @@ Your browser does not support the HTML5 canvas tag.</canvas>
     </script>
   </body>
 </html>
+EOF
+
+echo "$(ncftpput -t 20 -r 1 -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$CSSFILENAME)"
+
+if [ "$?" == 1 ]
+then
+  echo "ftp server timeout."
+  #Placeholder for text code
+  page_msg "ftp server timeout"
+  exit
+fi
+
+echo "$(ncftpput -t 20 -r 1 -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME)"
+
+set +x
