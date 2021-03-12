@@ -32,7 +32,7 @@ CPM=$(echo $STATS  | jq .data.coinsPerMin)
 CPM=$(bc <<< "scale=8; ${CPM: 0:${#CPM}-4} / 10 ^ ${CPM: -1}")
 ETHOWNED=$(curl -s "https://api.etherscan.io/api?module=account&action=balance&address=$MINERADDR&tag=latest&apikey=$APITOKEN" | jq -r .result)
 ETHOWNED=$(bc <<< "scale=8; $(echo $ETHOWNED  / 1000000000000000000)")
-echo $ETHOWNED
+#echo $ETHOWNED
 GPUDATA=(NAME BUSID TEMP FAN GPUUTIL MEMUTIL MEMTOTAL MEMFREE MEMUSED POWDRAW POWLIMIT)
 FIELDSTOSHOW=( 0 1 2 3 4 5 8 6 )
 #MINERSTATS=$(curl -s https://api.ethermine.org/miner/$MINERADDR/worker/$WORKER/currentStats)

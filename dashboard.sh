@@ -3,6 +3,7 @@
 
 # Wait for miners to deliver files
 sleep 22
+#set -x
 
 #DIR_TO_FILES="/home/metrics/minermetrics1/worker_files"
 DIR_TO_FILES="/home/doc/Applications/minermetrics1/data"
@@ -589,7 +590,7 @@ EOF
 
 echo "$(ncftpput -t 20 -r 1 -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$CSSFILENAME)"
 
-if [ "$?" ]
+if [ "$?" == 1 ]
 then
   echo "ftp server timeout."
   #Placeholder for text code
@@ -598,10 +599,7 @@ then
 fi
 
 echo "$(ncftpput -t 20 -r 1 -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME)"
-
-
-
-
+#set +x
 
 
 
