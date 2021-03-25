@@ -1,4 +1,3 @@
-2linuxThu Mar 11 20:27:01 PST 2021
-name, pci.bus_id, temperature.gpu, fan.speed [%], utilization.gpu [%], utilization.memory [%], memory.total [MiB], memory.free [MiB], memory.used [MiB], power.draw [W], power.limit [W]
-GeForce GTX 1060 6GB, 00000000:01:00.0, 67, 57 %, 100 %, 93 %, 6075 MiB, 1734 MiB, 4341 MiB, 118.31 W, 120.00 W
-GeForce GTX 1060 6GB, 00000000:07:00.0, 67, 57 %, 100 %, 93 %, 6078 MiB, 1754 MiB, 4324 MiB, 119.31 W, 120.00 W
+2linuxWed Mar 24 21:25:13 PDT 2021
+NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver. Make sure that the latest NVIDIA driver is installed and running.
+

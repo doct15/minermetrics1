@@ -167,7 +167,7 @@ EOF
 	    for field in ${FIELDSTOSHOW[@]}
 	    do
   		echo "        <td colspan=1 align=\"center\">${gpuvalues[$field]}</td>" >> $DIR_TO_FILES/$WEBFILENAME
-		echo -n "$MINERNAME.${gpudata[$field]}:${gpuvalues[$field]}"
+		echo -n "$MINERNAME.${GPUDATA[$field]}:${gpuvalues[$field]//[^0-9]/}"
             done
             echo "      </tr>" >> $DIR_TO_FILES/$WEBFILENAME
 		  ((gpu=gpu++))
