@@ -2,7 +2,7 @@
 #
 
 # Wait for miners to deliver files
-sleep 11
+#sleep 11
 
 #set -x
 
@@ -156,25 +156,27 @@ EOF
 		  done
 		  if [ "$linenum" -eq "3" ]
 		  then
-      echo "      <tr>" >> $DIR_TO_FILES/$WEBFILENAME		  
+                  echo "      <tr>" >> $DIR_TO_FILES/$WEBFILENAME		  
 		    for field in ${FIELDSTOSHOW[@]}
 		    do
 		      echo "        <th colspan=1 align=\"center\">${GPUDATA[$field]}</th>" >> $DIR_TO_FILES/$WEBFILENAME
 		    done
 		    echo "      </tr>" >> $DIR_TO_FILES/$WEBFILENAME
 		  fi
-      echo "      <tr>" >> $DIR_TO_FILES/$WEBFILENAME		  
+                 echo "      <tr>" >> $DIR_TO_FILES/$WEBFILENAME		  
 	    for field in ${FIELDSTOSHOW[@]}
 	    do
-  		  echo "        <td colspan=1 align=\"center\">${gpuvalues[$field]}</td>" >> $DIR_TO_FILES/$WEBFILENAME
-  		done
-      echo "      </tr>" >> $DIR_TO_FILES/$WEBFILENAME
+  		echo "        <td colspan=1 align=\"center\">${gpuvalues[$field]}</td>" >> $DIR_TO_FILES/$WEBFILENAME
+		echo -n "$MINERNAME.${gpudata[$field]}:${gpuvalues[$field]}"
+            done
+            echo "      </tr>" >> $DIR_TO_FILES/$WEBFILENAME
 		  ((gpu=gpu++))
 	  fi
 	  ((linenum=linenum+1))
   done < $MINERFILE
   echo "    <tr><td colspan=8 style="background-color:#FFFFFF"></td></tr></table>" >> $DIR_TO_FILES/$WEBFILENAME
 done
+
 echo "</body></html>" >> $DIR_TO_FILES/$WEBFILENAME
 
 echo "$(ncftpput -t 20 -r 1 -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$CSSFILENAME)"
