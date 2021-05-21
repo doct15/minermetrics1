@@ -2,7 +2,7 @@
 #
 
 # Wait for miners to deliver files
-#sleep 11
+sleep 11
 
 #set -x
 
@@ -71,7 +71,7 @@ function page_msg () {
 cat  > $DIR_TO_FILES/$WEBFILENAME <<EOF
 <html>
   <head>
-    <meta http-equiv="refresh" content="74">
+    <meta http-equiv="refresh" content="33">
     <link rel="stylesheet" href="$CSSFILENAME" />
   </head>
   <body bgcolor=#000000>
@@ -124,6 +124,10 @@ do
 		  MINERCURRENTHASHRATE=$(bc <<< "scale=2; $(echo $MINERSTATS | jq .data.currentHashrate) / 1000000")
 		  MINERVALIDSHARES=$(echo $MINERSTATS | jq .data.validShares)
 		  MINERINVALIDSHARES=$(echo $MINERSTATS | jq .data.invalidShares)
+		  echo -n "miners.$MINERNAME.NUMGPU:$NUMGPU|c" | nc -w 1 -u linux 8125
+		  echo -n "miners.$MINERNAME.HASHRATE:$MINERCURRENTHASHRATE|c" | nc -w 1 -u linux 8125
+		  echo -n "miners.$MINERNAME.VALIDSHARES:$MINERVALIDSHARES|c" | nc -w 1 -u linux 8125
+		  echo -n "miners.$MINERNAME.INVALIDSHARES:$MINERINVALIDSHARES|c" | nc -w 1 -u linux 8125
 cat >> $DIR_TO_FILES/$WEBFILENAME <<EOF
     <table class=blueTable>
       <tr>
@@ -167,7 +171,11 @@ EOF
 	    for field in ${FIELDSTOSHOW[@]}
 	    do
   		echo "        <td colspan=1 align=\"center\">${gpuvalues[$field]}</td>" >> $DIR_TO_FILES/$WEBFILENAME
-		echo -n "$MINERNAME.${GPUDATA[$field]}:${gpuvalues[$field]//[^0-9]/}"
+		if [ $field -gt "2" ]
+		then
+			#echo "$MINERNAME.${GPUDATA[$field]}:${gpuvalues[$field]//[^0-9]/}"			
+			echo -n "miners.$MINERNAME.GPU$NUMGPU.${GPUDATA[$field]}:${gpuvalues[$field]//[^0-9]/}|c" | nc -w 1 -u linux 8125
+		fi
             done
             echo "      </tr>" >> $DIR_TO_FILES/$WEBFILENAME
 		  ((gpu=gpu++))
@@ -181,13 +189,13 @@ echo "</body></html>" >> $DIR_TO_FILES/$WEBFILENAME
 
 echo "$(ncftpput -t 20 -r 1 -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$CSSFILENAME)"
 
-if [ "$?" == 1 ]
-then
-  echo "ftp server timeout."
+#if [ "$?" == 1 ]
+#then
+#  echo "ftp server timeout."
   #Placeholder for text code
-  page_msg "ftp server timeout"
-  exit
-fi
+#  page_msg "ftp server timeout"
+#  exit
+#fi
 
 echo "$(ncftpput -t 20 -r 1 -V -u gpumetrics -p $PASSWORD 01f5156.netsolhost.com . $DIR_TO_FILES/$WEBFILENAME)"
 
