@@ -3,7 +3,8 @@
 
 export DISPLAY=:0.0
 #export XAUTHORITY=/var/run/lightdm/root/\:0
-export XAUTHORITY=/run/user/121/gdm/Xauthority
+#export XAUTHORITY=/run/user/121/gdm/Xauthority
+export XAUTHORITY=/home/doc/.Xauthority
 FANSPEED=80
 TRANSFERRATEOFFSET=1200
 CLOCKOFFSET=140
