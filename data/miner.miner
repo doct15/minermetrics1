@@ -1,8 +1,8 @@
-6minerSun Feb 27 10:53:01 PST 2022
+6minerSun Feb 27 10:58:01 PST 2022
 name, pci.bus_id, temperature.gpu, fan.speed [%], utilization.gpu [%], utilization.memory [%], memory.total [MiB], memory.free [MiB], memory.used [MiB], power.draw [W], power.limit [W]
-GeForce GTX 1070, 00000000:01:00.0, 62, 75 %, 100 %, 92 %, 8118 MiB, 3161 MiB, 4957 MiB, 120.29 W, 151.00 W
-GeForce GTX 1070, 00000000:02:00.0, 72, 75 %, 100 %, 91 %, 8119 MiB, 3182 MiB, 4937 MiB, 121.81 W, 151.00 W
-GeForce GTX 1070, 00000000:03:00.0, 66, 75 %, 100 %, 92 %, 8119 MiB, 3182 MiB, 4937 MiB, 125.15 W, 151.00 W
-GeForce GTX 1070, 00000000:04:00.0, 67, 75 %, 100 %, 92 %, 8119 MiB, 3182 MiB, 4937 MiB, 126.94 W, 151.00 W
-GeForce GTX 1070, 00000000:05:00.0, 74, 75 %, 100 %, 91 %, 8119 MiB, 3182 MiB, 4937 MiB, 125.64 W, 151.00 W
-GeForce GTX 1070, 00000000:06:00.0, 76, 75 %, 100 %, 90 %, 8119 MiB, 3182 MiB, 4937 MiB, 121.10 W, 151.00 W
+GeForce GTX 1070, 00000000:01:00.0, 64, 75 %, 100 %, 92 %, 8118 MiB, 3161 MiB, 4957 MiB, 120.78 W, 151.00 W
+GeForce GTX 1070, 00000000:02:00.0, 75, 75 %, 100 %, 91 %, 8119 MiB, 3182 MiB, 4937 MiB, 122.82 W, 151.00 W
+GeForce GTX 1070, 00000000:03:00.0, 67, 75 %, 100 %, 91 %, 8119 MiB, 3182 MiB, 4937 MiB, 121.24 W, 151.00 W
+GeForce GTX 1070, 00000000:04:00.0, 69, 75 %, 100 %, 91 %, 8119 MiB, 3182 MiB, 4937 MiB, 126.67 W, 151.00 W
+GeForce GTX 1070, 00000000:05:00.0, 77, 75 %, 100 %, 90 %, 8119 MiB, 3182 MiB, 4937 MiB, 123.65 W, 151.00 W
+GeForce GTX 1070, 00000000:06:00.0, 79, 75 %, 100 %, 89 %, 8119 MiB, 3182 MiB, 4937 MiB, 121.72 W, 151.00 W
