@@ -3,11 +3,20 @@
 sleep 30
 
 export DISPLAY=:0.0
+<<<<<<< HEAD
 #export XAUTHORITY=/run/user/119/gdm/Xauthority
 export XAUTHORITY=/run/user/1000/gdm/Xauthority
 FANSPEED=75
 TRANSFERRATEOFFSET=1000
 CLOCKOFFSET=20
+=======
+#export XAUTHORITY=/var/run/lightdm/root/\:0
+#export XAUTHORITY=/run/user/121/gdm/Xauthority
+export XAUTHORITY=/home/doc/.Xauthority
+FANSPEED=80
+TRANSFERRATEOFFSET=1200
+CLOCKOFFSET=140
+>>>>>>> 9a6b86d8c576bebf318531bd5ce65093d08e2a88
 
 for i in 0 1
 do
