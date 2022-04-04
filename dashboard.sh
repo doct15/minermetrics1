@@ -10,7 +10,8 @@ DIR_TO_FILES="/home/doc/Applications/minermetrics1/data"
 FILE_EXT=".metrics"
 WEBFILENAME="dashboard.html"
 CSSFILENAME="dashboard.css"
-MINERADDR="0xa4df0737ee0345271b41105e2e37a3eae471d772"
+#MINERADDR="0xa4df0737ee0345271b41105e2e37a3eae471d772"
+MINERADDR="0x044Eb6E90BFFb22b4b3dBe6B58B61b2b38C08AAc"
 MINERS=( "gamer" "linux" "miner" )
 PHONENUM=$(cat /etc/phone.number)
 PHONEPWD=$(cat /etc/pom.pwd)
@@ -138,7 +139,8 @@ Your browser does not support the HTML5 canvas tag.</canvas>
       //
       // Below is data to be supplied from linux parsing script
       //
-      var MINERADDR = "0xa4df0737ee0345271b41105e2e37a3eae471d772";
+      //var MINERADDR = "0xa4df0737ee0345271b41105e2e37a3eae471d772";
+      var MINERADDR = "0x044Eb6E90BFFb22b4b3dBe6B58B61b2b38C08AAc";
       var HASHRATE = $CURRENTHASHRATE;
       var ETH = $ETHOWNED;
       var WORKERS = $ACTIVEWORKERS;
